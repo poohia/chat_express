@@ -1,0 +1,15 @@
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column; }
+
+footer {
+  margin-top: 0px !important; }
+
+main {
+  flex: 1 0 auto; }
+
+#dashboard {
+  margin-bottom: 0px; }
+  #dashboard .dash-col {
+    min-height: 550px; }
