@@ -1,11 +1,15 @@
 var express = require('express'),
     exp = express();
 
+require('express-reverse')(exp);
+
 var http = require('http');
 var path = require('path');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var compression = require('compression');
+
+var chat_valid = require("./../views/common_modules/validate.module.js");
 
 module.exports = function(app) {
     'use strict';
@@ -48,13 +52,18 @@ module.exports = function(app) {
     };
 
     function route(){
-             exp.get('/', function(req, res, next) {
+             exp.get("index", '/', function(req, res, next) {
                 res.render('index');
              });
-             exp.post('/login',function(req, res, next){
-                res.redirect('/dashboard');
+             exp.post("login", '/login',function(req, res, next){
+                if(chat_valid.password(req.body.password) && chat_valid.email(req.body.email))
+                    res.redirect('/dashboard');
+                else
+                {
+                    res.redirect('/');
+                }
              });
-             exp.get('/dashboard',function(req, res, next){
+             exp.get("dashboard", '/dashboard',function(req, res, next){
                 res.render('dashboard');
              });
            /* exp.get('/map', function(req, res, next) {
