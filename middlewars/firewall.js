@@ -17,11 +17,15 @@ var module_firewall = function(){
 	var user    = { "name" :    hash.generateHash('USER'),    "homeUrl" : "/dashboard" } ;
 	var admin   = { "name" :    hash.generateHash("ADMIN"),   "homeUrl" : "/admin" } ;
 
+	// list of roles
 	var roles = [anonyme, user, admin] ; 
 
 	var rules = 	
 	{
 		"parfeu":[
+		 // For add rule put to begin into this json
+		 // {"url": {{ RegEx url }}, "role" : [ {"item" : role1}, {"item" : role2} ] }
+
 		    {"url":"^/login/", "role" : [ {"item" : anonyme}, ] },
 		    {"url":"^/dashboard", "role": [ {"item" : user}, ] },
 		    {"url":"^/logout", "role": [ {"item" : user}, ] },

@@ -17,6 +17,16 @@ main {
   #dashboard .dash-col {
     min-height: 550px; }
 
+#portlet-myaccount img {
+  width: 25%; }
+
+#portlet-myaccount ul li {
+  margin-bottom: 2px; }
+  #portlet-myaccount ul li span {
+    font-weight: bold; }
+  #portlet-myaccount ul li img {
+    width: 25%; }
+
 .column {
   float: left;
   padding-bottom: 100px; }
@@ -34,7 +44,8 @@ main {
   cursor: move; }
 
 .portlet-header > i {
-  float: right; }
+  float: right;
+  margin-right: 6px; }
 
 .portlet-header > i:hover {
   cursor: pointer; }
@@ -61,3 +72,6 @@ main {
 
 .ui-widget-header .ui-icon {
   display: none; }
+
+.text-center {
+  text-align: center; }

@@ -119,7 +119,7 @@ module.exports = function(app) {
              });
              exp.get("dashboard", '/dashboard', function(req, res, next){
                 // console.log(req.session);
-                res.render('dashboard');
+                res.render('dashboard', {'user' : req.session.user});
              });
              exp.get("logout", "/logout", function(req, res, next){
                 console.log("log out");

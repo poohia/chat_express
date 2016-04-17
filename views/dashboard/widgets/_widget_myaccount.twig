@@ -1,0 +1,23 @@
+<div class="z-depth-1 portlet" id="portlet-myaccount">
+	<div class="portlet-header">
+		My account 
+		<i class="fa fa-times close-widget circle grey-text lighten-2" aria-hidden="true"></i>
+		<i class="fa fa-pencil circle grey-text lighten-2" aria-hidden="true"></i>
+	</div>
+	<div class="portlet-content">
+		<ul>
+			<li class="text-center">
+			 <img src="{{ user.avatar}}" class="responsive-img circle"></img>
+			</li>
+			<li>
+				<label>Email : </label><span>{{user.email}}</span>
+			</li>
+			<li>
+				<label>Speudo : </label><span>{{user.speudo}}</span>
+			</li>
+			<li>
+				<label>Country : </label><span>{{user.country}}</span>
+			</li>
+		</ul>
+	</div>
+</div>

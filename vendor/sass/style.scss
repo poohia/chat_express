@@ -24,6 +24,22 @@ main{
 	}
 	margin-bottom : 0px;
 }
+#portlet-myaccount{
+	img{
+		width: 25%;
+	}
+	ul li
+	{
+		margin-bottom: 2px;
+		span
+		{
+			font-weight: bold;
+		}
+		img{
+			width: 25%;
+		}
+	}
+}
 .column {
 	//@extend .s4 ; 
 	//min-width:  33.33333%;
@@ -44,6 +60,7 @@ main{
 }
 .portlet-header > i {
 	float: right ;
+	margin-right: 6px;
 }
 .portlet-header > i:hover {
 	cursor : pointer ; 
@@ -72,4 +89,8 @@ main{
 .ui-widget-header .ui-icon
 {
 	display: none ;
+}
+.text-center
+{
+	text-align: center;
 }

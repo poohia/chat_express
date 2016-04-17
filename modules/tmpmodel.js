@@ -6,7 +6,10 @@ module.exports = function(app){
 
 	var user = 
 		{
-			'email' : "jojo94320@gmail.com", 
+			'email' : "jojo94320@gmail.com",
+			'speudo' : 'jordan',
+			'country' : 'france',
+			'avatar' : '/images/yuna.jpg', 
 			'password' : hash.generateHash("Motdepass1"),
 			'role'    : hash.generateHash('USER')
 		}
