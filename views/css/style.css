@@ -3,6 +3,9 @@ body {
   min-height: 100vh;
   flex-direction: column; }
 
+header {
+  margin-bottom: 3%; }
+
 footer {
   margin-top: 0px !important; }
 
@@ -13,3 +16,48 @@ main {
   margin-bottom: 0px; }
   #dashboard .dash-col {
     min-height: 550px; }
+
+.column {
+  float: left;
+  padding-bottom: 100px; }
+
+.portlet {
+  margin: 0 1em 1em 0;
+  padding: 0.3em; }
+
+.portlet-header {
+  padding: 0.2em 0.3em;
+  margin-bottom: 0.5em;
+  position: relative; }
+
+.portlet-header:hover {
+  cursor: move; }
+
+.portlet-header > i {
+  float: right; }
+
+.portlet-header > i:hover {
+  cursor: pointer; }
+
+.portlet-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  margin-top: -8px; }
+
+.portlet-content {
+  padding: 0.4em; }
+
+.portlet-placeholder {
+  border: 3px dashed #ddd;
+  margin: 0 1em 1em 0;
+  height: 50px; }
+
+.ui-widget-header {
+  background-color: white;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #ddd; }
+
+.ui-widget-header .ui-icon {
+  display: none; }

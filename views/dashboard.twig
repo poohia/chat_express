@@ -1,16 +1,28 @@
 {% extends "base/base.twig" %}
+
+{% block stylesheets %}
+{%  endblock stylesheets %}
+
+{% block header %}
+{% include "dashboard/_dashboard_header.twig" %}
+{%  endblock header %}
+
 {% block body %}
-    <!-- Page Layout here -->
-    <div class="row" id="dashboard" >
 
-      <div class="col s12 m4 l3 grey lighten-3 dash-col">
-      	{% include "_dashboard_user.twig" %}
+    <div class="row " id="dashboard" >
 
-      </div>
+    {% include "dashboard/_dashboard_btn.twig" %}
 
-      <div class="col s12 m8 l9  white dash-col"> 
-
+      <div class="col s12   white dash-col"> 
+			{% include "dashboard/_dashboard_widget_myaccount.twig" %}
       </div>
 
     </div>
+
+
 {% endblock body %}
+
+{% block javascript %}
+	    <script type="text/javascript" src="/js/jquery-ui.js"></script>
+	    <script type="text/javascript" src="/js/dashboard.js"></script>
+{% endblock %}
