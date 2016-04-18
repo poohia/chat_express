@@ -1,13 +1,15 @@
 module.exports = {
     start: function(req, res, next){
-    //	console.log(req.originalUrl);
     	module_firewall.getFirewall(req, res, next);
     	
+    },
+    firewall : function(){
+    	return module_firewall;
     }
 };
 
 var hash = require("./../modules/hash")();
-var module_user = require("./../modules/tmpmodel")();
+var module_user_anonyme = require("./../models/anonyme_user")();
 
 
 var module_firewall = function(){
@@ -25,24 +27,44 @@ var module_firewall = function(){
 		"parfeu":[
 		 // For add rule put to begin into this json
 		 // {"url": {{ RegEx url }}, "role" : [ {"item" : role1}, {"item" : role2} ] }
-
+		 	{"url":"^/signup/", "role" : [ {"item": anonyme}, ] },
 		    {"url":"^/login/", "role" : [ {"item" : anonyme}, ] },
 		    {"url":"^/dashboard", "role": [ {"item" : user}, ] },
 		    {"url":"^/logout", "role": [ {"item" : user}, ] },
 		    {"url":"^/", "role": [ {"item" : anonyme}, /*{"item" : user},*/] },
 		]
 	};
+     
+     function getStringRole(role)
+     {
+     	var i = 0 ;
+     	var currRole = hash.generateHash(role);
+     	var roleExist = false ;
+     	for(i; i < roles.length ; i++)
+     		{
+     			if(currRole == roles[i].name)
+     			{
+     				roleExist = true;
+     			}
+     		}
+     	if(roleExist) return currRole  ; else return anonyme.name ;
+     }
+
+     function getRoles()
+     {
+     	return roles ;
+     }
 
 	 function getFirewall(req, res, next)
 	 {
-            if(req.session.user === undefined)
-			 	{
-			 		req.session.user = module_user.getAnonymeUser() ;
-			 	}
-	 	    var currRule, currRole;
+            if(req.user === undefined)
+		 	{
+		 		req.user = module_user_anonyme.getAnonymeUser() ;
+		 	}
+	 	    var currUser, currRule, currRole;
 	 	    var bvalidUrl  = false, bvalidRole = false ; 
 	 	    var countRules  =  Object.keys(rules.parfeu).length , countRoles = roles.length;
-	 	    var i = 0 , j = 0 , k = 0 ;
+	 	    var m = 0,i = 0 , j = 0 , k = 0 ;
 
 	 	    // test if current url exist and if yes get rule of this url
 	 	    while( i < countRules )
@@ -62,7 +84,7 @@ var module_firewall = function(){
 	 	    while( j < countRoles)
 	 	    {
 	 	    	var node_role = roles[j];
-	 	    	if(req.session.user.role == node_role.name)
+	 	    	if(req.user.local.role == node_role.name)
 	 	    	{
 	 	    		currRole = node_role ;
 	 	    		bvalidRole = true;
@@ -110,7 +132,9 @@ var module_firewall = function(){
 	 };
 
 	return {
-		getFirewall : getFirewall
+		getFirewall : getFirewall,
+		getStringRole : getStringRole,
+		getRoles : getRoles
 		
 	}
 }();

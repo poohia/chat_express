@@ -1,32 +1,51 @@
-var bcrypt   = require('bcrypt-nodejs');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var hash = require("./../modules/hash")();
 
 
-module.exports = function(){
-	'use strict';
+var userSchema = mongoose.Schema({
 
-		var model_user = {
-			email : string,
-			password : String
-		};
+    local            : {
+        email        : String,
+        password     : String,
+        name 		 : String,
+        numero       : String,
+        role         : String
+    },
+    facebook         : {
+        id           : String,
+        token        : String,
+        email        : String,
+        name         : String
+    },
+    twitter          : {
+        id           : String,
+        token        : String,
+        displayName  : String,
+        username     : String
+    },
+    google           : {
+        id           : String,
+        token        : String,
+        email        : String,
+        name         : String
+    }
 
-		model_user.methods.generateHash = function(password){
-			return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-		};
+});
 
-		var User = {
-			{
-				"email" : "jojo94320@gmail.com",
-				"password" : "Motdepass1" //model_user.methods.generateHash("Motdepass1")
-			}
-		};
+var anonyme =
+  { 'locale' : 
+	{
+		'email' : "anonyme", 
+		'password' : "",
+		'role'    : hash.generateHash("ANONYME")
+	}
+  }
+	
 
-		User.findOne = function(username, password)
-		{
-			return User[0];
-		};
 
-		return {
+module.exports = mongoose.model('User', userSchema);
 
-			findOne : User.findOne
-		}
+return function getAnonymeUser(){
+    return anonyme;
 }

@@ -75,3 +75,27 @@ main {
 
 .text-center {
   text-align: center; }
+
+#dashboard {
+  position: relative; }
+  #dashboard .row-btn-signup {
+    position: absolute;
+    bottom: 0;
+    width: 100%; }
+  #dashboard button.signin-btn-header {
+    margin-top: -6px;
+    border-radius: 40px; }
+  #dashboard div.signin-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    top: 0;
+    left: 0;
+    z-index: 9999; }
+
+.hidden {
+  display: none; }
+
+.invisible {
+  visibility: hidden; }

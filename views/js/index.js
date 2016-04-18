@@ -1,0 +1,15 @@
+$(function(){
+	$("#signin-btn-header").click(function(){
+ 		$(".signin-content").addClass("slideInDown",function(){
+ 			if($(this).hasClass("invisible"))
+ 				$(this).removeClass("invisible");
+ 			if($(this).hasClass("slideOutUp"))
+ 				$(this).removeClass("slideOutUp");
+ 		});
+	});
+	$("#signup-btn-header").click(function(){
+		$(".signin-content").addClass("slideOutUp",function(){
+			//$(this).addClass("invisible");
+ 		});
+	});
+})

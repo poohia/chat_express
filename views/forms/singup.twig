@@ -1,0 +1,32 @@
+<form  id="form_signup" action="{{ url('signup') }}" method="post">
+<div class="row">
+<div class="input-field " >
+<input type="email" name="email" id="email" placeholder=""  class="validate" required/>
+<label for="email"> Email </label>
+</div>
+</div>
+<div class="row">
+<div class="input-field" >
+<input type="password" name="password" id="password" placeholder="" class="validate" required />
+<label for="password" > Password </label>
+</div>
+<div class="input-field" >
+<input type="password" name="" id="password_again" placeholder="" class="validate" required />
+<label for="password" > Password again </label>
+</div>
+<div class="input-field" >
+<input type="text" name="name" id="name" placeholder="" class="validate" required />
+<label for="password" > Speudo </label>
+</div>
+<div class="input-field" >
+<input type="text" name="mobile" id="mobile" placeholder="" class="validate" required />
+<label for="password" > Mobile number </label>
+</div>
+</div>
+<input type="hidden" name="token" id="token" />
+<div class="row ">
+<div class="col s12 offset-s8">
+<button type="submit" class="waves-effect red lighten-3 btn">Submit</button>
+</div>
+</div>
+</form>

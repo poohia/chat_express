@@ -3,12 +3,12 @@ var dirModules = __dirname + "/modules/"
 // SERVER
 app.server = require(dirModules + 'server')(app);
 app.server.create();
-/*
-app.db = require('./model/db')(app);
-app.db.connect();
-app.rooms = require('./model/rooms')(app);
-app.users = require('./model/users')(app);
 
+
+// DATABASE 
+app.db = require(dirModules + 'mongoose')(app);
+app.db.connect("chat_express");
+/*
 // SOCKET
 app.chat = require('./socket/chat')(app);
 app.socketRooms = require('./socket/rooms')(app);

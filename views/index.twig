@@ -1,21 +1,50 @@
 {% extends "base/base.twig" %}
 
+{% block stylesheets %}
+    <link href="/css/animate.css" type="text/css" rel="stylesheet" >
+{%  endblock stylesheets %}
+
+
 {% block body %}
+<div id="dashboard">
+{% include "index/_index_header.twig" %}
+
 <div class="row">&nbsp;</div>
       <div class="row">
 
         <div class="col s12 m6 offset-m3">
           <div class="card  white">
             <div class="card-content  black-text">
-              <span class="card-title"><h5>{{"Login"|upper}}</h5></span>
+              <span class="card-title"><h5>{{"Sign In"|upper}}</h5></span>
 
             </div>
             <div class="card-action ">
-            	{% include "forms/login.twig" %}
+              {% include "forms/singup.twig" %}
             </div>
           </div>
         </div>
       </div>
+      <div class="row invisible signin-content animated ">
+      <div class="row">&nbsp;</div>
+        <div class="col s12 m6 offset-m3">
+          <div class="card  white">
+            <div class="card-content  black-text">
+              <span class="card-title"><h5>{{"Log In"|upper}}</h5></span>
+
+            </div>
+            <div class="card-action ">
+               {% include "forms/login.twig" %} 
+            </div>
+          </div>
+        </div>
+        <div class="row row-btn-signup">   <button id="signup-btn-header" class="col s4 nav signin-btn-header offset-s4 btn waves-effect red lighten-3"> Sign up?? <i class="material-icons right">arrow_upward</i> </button></div>
+      </div>
+</div>
+              
 
 
 {% endblock body %}
+{% block javascript %}
+      <script type="text/javascript" src="/js/jquery-ui.js"></script>
+      <script type="text/javascript" src="/js/index.js"></script>
+{% endblock %}

@@ -5,7 +5,6 @@ require('express-reverse')(exp);
 
 
 
-//var passportjs = require('./passport');
 var http = require('http');
 var path = require('path');
 var bodyParser = require('body-parser');
@@ -13,11 +12,14 @@ var cookieParser = require('cookie-parser');
 var compression = require('compression');
 var uid = require('uid-safe');
 var session = require('express-session');
-var user = require("./tmpmodel")(exp);
+var flash    = require('connect-flash');
+var user_anonyme = require("./../models/anonyme_user")(exp);
 var hash = require("./hash")(exp);
 var firewall = require("./../middlewars/firewall");
 var chat_valid = require("./../views/common_modules/validate.module.js");
 
+var passport = require('passport');
+require('./passport')(passport);
 
 
 
@@ -67,6 +69,13 @@ module.exports = function(app) {
             // middleware used for going over POST request data, parse it into json on put it on req.body
             exp.use(bodyParser.json());
             exp.use(bodyParser.urlencoded({ extended: false }));
+
+            // user passport
+            exp.use(passport.initialize());
+            exp.use(passport.session());
+            // flash message
+            exp.use(flash()); 
+            // firewall 
             exp.use(firewall.start);
 
              // 404 Not Found
@@ -77,55 +86,27 @@ module.exports = function(app) {
 
     function route(){
              exp.get("index", '/', function(req, res, next) {
-                // Test if user is always connected in session request
-                // try{
-                //     var currUser = req.session.user ;
-                //     var findUser = user.findOne();
-                //     // console.log(currUser.name == findUser.name && currUser.password == findUser.password);
-                //     if(currUser.name == findUser.name && currUser.password == findUser.password)
-                //     {
-                //         res.redirect("dashboard");
-                //     }
-                // }catch(e){
-
-                // };
                 res.render('index');
 
              });
-             exp.post("login", '/login', function(req, res, next){
-                
-                /**** module chat_valid **********************************/
-                if(!(chat_valid.password(req.body.password) && chat_valid.email(req.body.email)))
-                    res.redirect('index');
-
-               var currUser = user.findOne();
-                if(currUser === null)
-                    res.redirect('index');
-                req.session.user = currUser ;
-
-                res.redirect("dashboard");
-                /**********************************************************/
-
-                /*** module passportjs ************************************/
-
-               /* passport.authenticate('local', 
-                    { successRedirect: 'dashboard',
-                      failureRedirect: 'index',
-                      failureFlash: true 
-                    });
-*/
-                /*********************************************************/
-
-             });
+             exp.post("login", '/login', passport.authenticate('local-login', {
+                  successRedirect : '/', // redirect to the secure profile section
+                  failureRedirect : '/', // redirect back to the signup page if there is an error
+                  failureFlash : true // allow flash messages
+             }));
              exp.get("dashboard", '/dashboard', function(req, res, next){
-                // console.log(req.session);
-                res.render('dashboard', {'user' : req.session.user});
+                res.render('dashboard', {'user' : req.user.local});
              });
-             exp.get("logout", "/logout", function(req, res, next){
-                console.log("log out");
-                req.session.user = user.getAnonymeUser();
+             exp.post("logout", "/logout", function(req, res, next){
+                req.logout();
                 res.redirect('/');
              });
+              // process the signup form
+              exp.post("signup", '/signup', passport.authenticate('local-signup', {
+                  successRedirect : '/', // redirect to the secure profile section
+                  failureRedirect : '/', // redirect back to the signup page if there is an error
+                  failureFlash : true // allow flash messages
+              }));
     };
 
     return {
