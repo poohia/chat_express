@@ -14,7 +14,7 @@ var validForm = function(){
 
 	    var items = {
 	      $email : $("#email"),
-	      $password : $("#password")
+	      $password : $("#password_login")
 	    }
 
 	    if(chat_valid.password(items.$password.val()))
