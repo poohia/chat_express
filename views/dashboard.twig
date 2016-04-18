@@ -1,5 +1,7 @@
 {% extends "base/base.twig" %}
-
+{% block title %}
+ 	Dashboard - Chat_express
+{% endblock title %}
 {% block stylesheets %}
 {%  endblock stylesheets %}
 
@@ -12,8 +14,8 @@
 
     {% include "dashboard/_dashboard_btn.twig" %}
 
-      <div class="col s12   white dash-col"> 
-			{% include "dashboard/_dashboard_widget_myaccount.twig" %}
+      <div class="col s12 dash-col"> 
+			{% include "dashboard/_dashboard_widgets.twig" %}
       </div>
 
     </div>

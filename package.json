@@ -17,6 +17,8 @@
     "express": "~4.13.1",
     "express-reverse": "^0.3.2",
     "express-session": "^1.13.0",
+    "moment": "^2.13.0",
+    "mongodb": "^2.1.16",
     "morgan": "~1.6.1",
     "nodemon": "^1.8.1",
     "passport": "^0.3.2",
