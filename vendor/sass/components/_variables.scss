@@ -43,6 +43,9 @@ $success-color: color("green", "base") !default;
 $error-color: color("red", "base") !default;
 $link-color: color("light-blue", "darken-1") !default;
 
+$label-color: color("grey","lighten-2") !default;
+$input-focus : color("grey","lighten-1") !default;
+
 
 /* 2. Badges
    ========================================================================== */
@@ -146,7 +149,7 @@ $input-border: 1px solid $input-border-color !default;
 $input-background: #fff !default;
 $input-error-color: $error-color !default;
 $input-success-color: $success-color !default;
-$input-focus-color: $secondary-color !default;
+$input-focus-color: $input-focus !default;
 $input-font-size: 1rem !default;
 $input-margin: 0 0 15px 0 !default;
 $input-padding: 0 !default;

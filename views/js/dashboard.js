@@ -23,4 +23,7 @@ $( document ).ready(function(){
       console.log($(this).closest("portlet"));
         $(this).closest(".portlet").fadeOut("slow");
     });
+    $("ul.column").each(function(){
+      Materialize.showStaggeredList($(this));
+    })
 });

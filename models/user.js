@@ -10,7 +10,8 @@ var userSchema = mongoose.Schema({
         password     : String,
         name 		 : String,
         numero       : String,
-        role         : String
+        role         : String,
+        avatar       : String
     },
     facebook         : {
         id           : String,
@@ -33,19 +34,6 @@ var userSchema = mongoose.Schema({
 
 });
 
-var anonyme =
-  { 'locale' : 
-	{
-		'email' : "anonyme", 
-		'password' : "",
-		'role'    : hash.generateHash("ANONYME")
-	}
-  }
-	
 
 
 module.exports = mongoose.model('User', userSchema);
-
-return function getAnonymeUser(){
-    return anonyme;
-}

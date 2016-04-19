@@ -16,6 +16,7 @@ var flash    = require('connect-flash');
 var user_anonyme = require("./../models/anonyme_user")(exp);
 var hash = require("./hash")(exp);
 var firewall = require("./../middlewars/firewall");
+var validate = require("./../middlewars/validate");
 var chat_valid = require("./../views/common_modules/validate.module.js");
 
 var passport = require('passport');
@@ -77,6 +78,8 @@ module.exports = function(app) {
             exp.use(flash()); 
             // firewall 
             exp.use(firewall.start);
+            // validate middlewar
+            exp.use(validate.start);
 
              // 404 Not Found
              /*exp.use(function(req, res, next){
@@ -86,7 +89,7 @@ module.exports = function(app) {
 
     function route(){
              exp.get("index", '/', function(req, res, next) {
-                res.render('index');
+                res.render('index',{'flashMessage' : req.flash("message")});
 
              });
              exp.post("login", '/login', passport.authenticate('local-login', {
@@ -108,7 +111,6 @@ module.exports = function(app) {
                   failureFlash : true // allow flash messages
               }));
     };
-
     return {
         create: create,
         listen: listen,

@@ -36,6 +36,8 @@ var validForm = function(){
 	      $email : $("#email"),
 	      $password : $("#password"),
 	      $password_again : $("#password_again"),
+	      $speudo         : $("#name"),
+	      $mobile         : $("#mobile")
 	    }
 
 	    if(chat_valid.password(items.$password.val()) && (items.$password_again.val() === items.$password.val()) )
@@ -49,7 +51,34 @@ var validForm = function(){
 	    	items.$password_again.removeClass("valid").addClass("invalid");
 	    	isValid = false;
 	    }
+	    if(chat_valid.email(items.$email.val()))
+	    {
+	    	items.$email.removeClass("invalid").addClass("valid");
+	    }
+	    else
+	    {
+	    	items.$email.removeClass("valid").addClass("invalid");
+	    	isValid = false;
 
+	    }
+	    if(chat_valid.no_Empty(items.$speudo.val()))
+	    {
+	    	items.$speudo.removeClass("invalid").addClass("valid");
+	    }
+	    else
+	    {
+	    	items.$speudo.removeClass("valid").addClass("invalid");
+	    	isValid = false;
+	    }
+	    if(chat_valid.only_Number(items.$mobile.val()))
+	    {
+	    	items.$mobile.removeClass("invalid").addClass("valid");
+	    }
+	    else
+	    {
+	    	items.$mobile.removeClass("valid").addClass("invalid");
+	    	isValid = false;
+	    }
 	    return (isValid && token());
 	};
 

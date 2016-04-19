@@ -92,7 +92,9 @@ main {
     background-color: white;
     top: 0;
     left: 0;
-    z-index: 9999; }
+    z-index: 100; }
+  #dashboard ul {
+    list-style-type: none; }
 
 .hidden {
   display: none; }

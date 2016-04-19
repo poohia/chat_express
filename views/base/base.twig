@@ -38,10 +38,27 @@
     <script type="text/javascript" src="/js/validForm.module.js"></script>
 
     <script type="text/javascript">
-       $(function(){  
+    /*** Init flash message **************/
+       var flashMessage = new Array();
+       {% for message in flashMessage %}
+          flashMessage.push("{{message}}");
+       {% endfor %}
+    /***************************************/
+
+       $(function(){
+
+          // init validation of all forms  
            validForm.init();
+
+           /*********** Get flashMessage() *******************/
+           for(var i = 0 ; i < flashMessage.length ; i++)
+           {
+                Materialize.toast(flashMessage[i], 5000);
+           }
+           /***************************************************/
        });
     </script>
+    
     {%  block javascript %}
     {% endblock javascript %}
   </body>

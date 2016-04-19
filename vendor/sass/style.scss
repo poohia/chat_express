@@ -119,8 +119,12 @@ main{
 	    background-color: white;
 	    top: 0;
 	    left: 0;
-	    z-index: 9999;
+	    z-index: 100;
 
+	}
+	ul
+	{
+		list-style-type:none;
 	}
 }
 

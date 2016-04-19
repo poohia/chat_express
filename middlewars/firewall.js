@@ -61,10 +61,23 @@ var module_firewall = function(){
 		 	{
 		 		req.user = module_user_anonyme.getAnonymeUser() ;
 		 	}
+		 	var btoken = false ; 
 	 	    var currUser, currRule, currRole;
 	 	    var bvalidUrl  = false, bvalidRole = false ; 
 	 	    var countRules  =  Object.keys(rules.parfeu).length , countRoles = roles.length;
 	 	    var m = 0,i = 0 , j = 0 , k = 0 ;
+
+	 	    if(req.body.token === undefined)
+	 	    {
+	 	    	btoken = true ;
+	 	    }
+	 	    else
+	 	    {
+	 	    	if(req.body.token.length <= 0)
+	 	    	{
+	 	    		btoken = true ;
+	 	    	}
+	 	    }
 
 	 	    // test if current url exist and if yes get rule of this url
 	 	    while( i < countRules )
@@ -93,8 +106,9 @@ var module_firewall = function(){
 
 	 	    	j++ ; 
 	 	    }
-	 	    // If url and role exist 
-	 	    if(bvalidRole && bvalidUrl)
+
+	 	    // If url and role exist  and token  is empty 
+	 	    if(bvalidRole && bvalidUrl && btoken)
 	 	    {
 	 	    	var bvalidCurrRole = false ;
 	 	    	var countRole = Object.keys(currRule.role).length;
@@ -125,7 +139,7 @@ var module_firewall = function(){
 	 	    // else return 404 Not Found
 	 	    else
 	 	    {
-
+	 	    	console.log("Error into firewall");
 	 	    }
 	 		
 
