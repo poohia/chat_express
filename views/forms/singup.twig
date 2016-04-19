@@ -1,4 +1,4 @@
-<form  id="form_signup" action="{{ url('signup') }}" method="post">
+<form  id="form_signup" action="{{ url('signup') }}" method="post" >
 <div class="row">
 <div class="input-field " >
 <input type="email" name="email" id="email" placeholder=""  class="validate" required/>
@@ -19,9 +19,17 @@
 <label for="name" > Speudo </label>
 </div>
 <div class="input-field" >
-<input type="text" name="mobile" id="mobile" placeholder="" class="validate" required />
+<input type="number" name="mobile" id="mobile" placeholder="" class="validate" required />
 <label for="mobile" > Mobile number </label>
 </div>
+<label >Sexe : </label>
+<p>
+<input class="with-gap" name="sexe" type="radio" id="man" value="man"  checked />
+<label for="man">Man</label>
+<input class="with-gap" name="sexe" type="radio" id="woman" value="woman"  />
+<label for="woman">Woman</label>
+
+</p>
 </div>
 <input type="hidden" name="token" id="token" />
 <div class="row ">

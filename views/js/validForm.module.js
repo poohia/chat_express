@@ -37,7 +37,8 @@ var validForm = function(){
 	      $password : $("#password"),
 	      $password_again : $("#password_again"),
 	      $speudo         : $("#name"),
-	      $mobile         : $("#mobile")
+	      $mobile         : $("#mobile"),
+	      $sexe			  : $("input[name=sexe]:checked")
 	    }
 
 	    if(chat_valid.password(items.$password.val()) && (items.$password_again.val() === items.$password.val()) )
@@ -79,6 +80,16 @@ var validForm = function(){
 	    	items.$mobile.removeClass("valid").addClass("invalid");
 	    	isValid = false;
 	    }
+		if(chat_valid.sexe(items.$sexe.val()))
+	    {
+	    	items.$sexe.removeClass("invalid").addClass("valid");
+	    }
+	    else
+	    {
+	    	items.$sexe.removeClass("valid").addClass("invalid");
+	    	isValid = false;
+	    }
+
 	    return (isValid && token());
 	};
 

@@ -18,11 +18,10 @@ var module_validate = function(){
  	
  	function getValid(req, res, next)
  	{
- 		console.log(req.body);
  		var isValid = true ; 
  		var body = req.body;
  		
- 		/*** RULES  for valid body **********/
+ 		/*** RULES  for validate body **********/
  		
  		if(body.email !== undefined)
  		{
@@ -40,7 +39,10 @@ var module_validate = function(){
  		{
  			(validate.only_Number(body.mobile))? '' : isValid = false;
  		}
-
+ 		if(body.sexe !== undefined)
+ 		{
+ 			(validate.sexe(body.sexe))? '' : isValid = false ;
+ 		}
  		/************************************/
  		if(isValid)
 		{
@@ -48,7 +50,7 @@ var module_validate = function(){
 		}
 		else
 		{
-			req.flash("message", "error in post information");
+			req.flash("message", "Error in post information");
 			res.redirect("/");
 		}
  	}

@@ -41,7 +41,7 @@ module.exports = function(passport) {
     },
     function(req, email, password, done) {
 
-
+        
         // asynchronous
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
@@ -60,12 +60,20 @@ module.exports = function(passport) {
                 // if there is no user with that email
                 // create the user
                 var newUser            = new User();
-
                 // set the user's local credentials
                 newUser.local.email    = email;
                 newUser.local.password = hash.hashUserPassword(password);
-                newUser.local.name     = req.body.speudo;
+                newUser.local.name     = req.body.name;
                 newUser.local.numero   = req.body.mobile;
+                newUser.local.sexe     = req.body.sexe;
+                if(req.body.sexe === "man")
+                {
+                    newUser.local.avatar = "/images/man.jpg";
+                }
+                else if(req.body.sexe === "woman")
+                {
+                    newUser.local.avatar = "/images/woman.jpg";
+                }
                 newUser.local.role     = firewall.getStringRole("USER");
                 // save the user
                 newUser.save(function(err) {

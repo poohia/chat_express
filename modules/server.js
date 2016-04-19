@@ -23,7 +23,18 @@ var passport = require('passport');
 require('./passport')(passport);
 
 
+var fs = require('fs');
+var multer  = require('multer');
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, __dirname + '/../views/uploads/'+ req.user.local.name + "/" ) ;
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname ) ;
+  }
+});
 
+var upload = multer({ storage: storage });
 
 
 
@@ -110,6 +121,10 @@ module.exports = function(app) {
                   failureRedirect : '/', // redirect back to the signup page if there is an error
                   failureFlash : true // allow flash messages
               }));
+
+              exp.get("my-account","/my-account",function(req, res, next){
+                res.render("my-account");
+              });
     };
     return {
         create: create,
