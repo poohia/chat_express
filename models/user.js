@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var hash = require("./../modules/hash")();
-var AutoIncrement = require("mongoose-sequence");
+//var AutoIncrement = require("mongoose-sequence");
 
 
 var userSchema = mongoose.Schema({
@@ -36,7 +36,7 @@ var userSchema = mongoose.Schema({
 
 });
 
-userSchema.plugin(AutoIncrement, {inc_field: 'id_user'});
+//userSchema.plugin(AutoIncrement, {inc_field: 'id_user'});
 
 
 

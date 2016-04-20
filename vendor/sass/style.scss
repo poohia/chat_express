@@ -79,6 +79,7 @@ main{
 	border: 3px dashed #ddd;
 	margin: 0 1em 1em 0;
 	height: 50px;
+	opacity: 1 !important;
 }
 .ui-widget-header
 {
@@ -122,9 +123,18 @@ main{
 	    z-index: 100;
 
 	}
-	ul
+	ul.dashbord_col_widget
 	{
 		list-style-type:none;
+		li
+		{
+			@extend .opacity-0 ;
+		}
+	}
+	ul#list_find_contact
+	{
+	    max-height: 250px;
+	    overflow: auto;
 	}
 }
 
@@ -136,8 +146,18 @@ main{
 {
 	visibility: hidden;
 }
-//slideInDown
-
+.opacity-0
+{
+	opacity: 0;
+}
+.opacity-1
+{
+	opacity: 1;
+}
+.opacity-1-important
+{
+	opacity: 1 !important;
+}
 #btn_test_speudo{
 	position: absolute;
 	top: 0;

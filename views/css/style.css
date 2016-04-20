@@ -62,7 +62,8 @@ main {
 .portlet-placeholder {
   border: 3px dashed #ddd;
   margin: 0 1em 1em 0;
-  height: 50px; }
+  height: 50px;
+  opacity: 1 !important; }
 
 .ui-widget-header {
   background-color: white;
@@ -93,14 +94,26 @@ main {
     top: 0;
     left: 0;
     z-index: 100; }
-  #dashboard ul {
+  #dashboard ul.dashbord_col_widget {
     list-style-type: none; }
+  #dashboard ul#list_find_contact {
+    max-height: 250px;
+    overflow: auto; }
 
 .hidden {
   display: none; }
 
 .invisible {
   visibility: hidden; }
+
+.opacity-0, #dashboard ul.dashbord_col_widget li {
+  opacity: 0; }
+
+.opacity-1 {
+  opacity: 1; }
+
+.opacity-1-important {
+  opacity: 1 !important; }
 
 #btn_test_speudo {
   position: absolute;

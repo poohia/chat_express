@@ -4,8 +4,8 @@ var validForm = function(){
 	var _forms = {
 		'login' : '#form_login',
 		'signup' : '#form_signup',
-		'logout' : '#form_logout',
-		'submit_logout' : '#submit_logout'
+		'logout' : 'form.form_logout',
+		'submit_logout' : 'form a.submit_logout',
 	}
 
 	function login(){

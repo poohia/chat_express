@@ -1,0 +1,29 @@
+<li class="z-depth-1 portlet  white theme-color-text" >
+	<div class="portlet-header white ">
+		<span class="fa fa-users" aria-hidden="true"></span> Contact 
+		<i class="fa fa-times close-widget   theme-color-text-2" aria-hidden="true"></i>
+	    <a class="fa fa-user-plus theme-color-text-2 modal-trigger" aria-hidden="true" href="#addContactModal"></a>
+	</div>
+	<div class="portlet-content">
+		<ul>
+
+		</ul>
+	</div>
+</li>
+
+<div id="addContactModal" class="modal bottom-sheet">
+<div class="modal-content">
+  <h4>Add contact</h4>
+  <div class="row">
+  	{% include "forms/search_user.twig" %}
+  </div>
+  <p class="hidden not-found"> Not found . </p>
+  <ul class="collection hidden" data-prototype='<li class="collection-item avatar opacity-1-important" data-id="__id__"><img src="__img__" alt="__alt__" class="circle"> <span class="title">__title__</span><p>__content__</p><a href="#" class="secondary-content icon_add_user" ><i class="fa fa-user-plus theme-color-text modal-trigger " aria-hidden="true" ></i></a>' id="list_find_contact" >
+
+  </ul>
+
+</div>
+<div class="modal-footer">
+  {#<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>#}
+</div>
+</div>

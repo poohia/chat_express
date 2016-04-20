@@ -23,7 +23,11 @@ var chat_valid = require("./../views/common_modules/validate.module.js");
 var passport = require('passport');
 require('./passport')(passport);
 
+/**** MODELS ***************************************/
 var User            = require('./../models/user');
+var Contact            = require('./../models/contact');
+var spoolContactsShema  = require('./../models/spool_contact');
+/**************************************************/
 
 var fs = require('fs');
 var multer  = require('multer');
@@ -128,8 +132,8 @@ module.exports = function(app) {
               });
 
               exp.get("speudo","/speudo/:name",function(req, res, next){
+                res.contentType("json");
                 User.findOne({ 'local.name' :  req.params.name }, function(err, user) {
-                  res.contentType("json");
                   if (err)
                     res.status(500);
                   if(user)
@@ -143,6 +147,29 @@ module.exports = function(app) {
                   }
                 })
               });
+
+              /*** GET USER when user.local.name  like :name  **********************/
+              exp.get("users","/users/:name", function(req, res, next){
+                  res.contentType("json");
+                  User.find({ 'local.name' : new RegExp(req.params.name, "i")},'local.name local.avatar',function(err, users){
+                    if (err)
+                       res.status(500);
+                    res.send( JSON.stringify({users: users}));
+                  });
+              });
+
+              /**** ADD USER ********************************/
+              exp.post("add-user","/user/add/", function(req, res, next){
+                  var tmpSpool = new spoolContactsShema({_user_1 : req.user._id, _user_2 : req.body.id_user});
+                  tmpSpool.saveNoRepeat(function(err, spool_saved){
+                  //console.log(err);
+                  res.contentType("json");
+                    if(err)
+                      res.status(500);
+                    res.send(JSON.stringify({"work": "finished"}));
+                  });
+                }
+              );
     };
     return {
         create: create,

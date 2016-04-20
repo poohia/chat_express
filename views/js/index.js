@@ -1,6 +1,6 @@
 $(function(){
 	INDEX.init();
-})
+});
 
 var INDEX = function(){
 

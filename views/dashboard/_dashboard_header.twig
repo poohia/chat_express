@@ -11,7 +11,7 @@
       <ul class="side-nav theme-color-text-2" id="mobile-demo">
         <li><a href={{url("dashboard")}}><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a></li>
         <li><a href="{{url("my-account")}}"><i class="fa fa-user" aria-hidden="true"></i> My account</a></li>
-        <li><a href="{{ url("logout") }}">Logout</a></li>
+        <li>{% include "forms/logout.twig" %}</li>
       </ul>
     </div>
   </nav>
