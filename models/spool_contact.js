@@ -15,19 +15,20 @@ var spoolContactsShema = new mongoose.Schema({
 }
 */
 
-spoolContactsShema.methods.saveNoRepeat = function(){
-	console.log("i'm here!");
-	this.model("SpoolContacts").find({'_user_1' : this._user_1, '_user_2':  this._user_2},function(err, spool){
-		if(spool.lenght > 0)
+spoolContactsShema.methods.saveNoRepeat = function(callback){
+	var spoolModel = this.model("SpoolContacts");
+	var params =  {'_user_1' : this._user_1, '_user_2':  this._user_2}; 
+	spoolModel.find(params,function(err, spool){
+		console.log(spool);
+		if(Object.keys(spool).length  > 0)
 		{
-
+			callback(err, spool);
 		}
 		else
 		{
-			this.model("SpoolContacts").save({'_user_1' : this._user_1, '_user_2':  this._user_2},function(err, spool)){
-
-			}
-		}
+			var spoolcontact = new spoolModel(params) ;
+			spoolcontact.save(callback);
+		} 
 	})
 }
 
