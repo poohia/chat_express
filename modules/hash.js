@@ -15,8 +15,8 @@ module.exports = function(app){
 	};
 
 	// checking if password is valid
-	 function valisUserPassword(password) {
-	    return bcrypt.compareSync(password, this.local.password);
+	 function valisUserPassword(password, password_bdd) {
+	    return bcrypt.compareSync(password, password_bdd);
 	};
 
 	return {

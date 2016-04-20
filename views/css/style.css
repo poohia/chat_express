@@ -101,3 +101,9 @@ main {
 
 .invisible {
   visibility: hidden; }
+
+#btn_test_speudo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer; }

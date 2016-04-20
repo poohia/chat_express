@@ -27,6 +27,7 @@ var module_firewall = function(){
 		"parfeu":[
 		 // For add rule put to begin into this json
 		 // {"url": {{ RegEx url }}, "role" : [ {"item" : role1}, {"item" : role2} ] }
+		 	{"url":"^/speudo", "role" : [ {"item": anonyme}, ] },
 		 	{"url":"^/my-account", "role" : [ {"item": user}, ] },
 		 	{"url":"^/signup/", "role" : [ {"item": anonyme}, ] },
 		    {"url":"^/login/", "role" : [ {"item" : anonyme}, ] },
@@ -62,7 +63,7 @@ var module_firewall = function(){
 		 	{
 		 		req.user = module_user_anonyme.getAnonymeUser() ;
 		 	}
-		 	var btoken = false ; 
+		 	var btoken = false, bajax = req.xhr ; 
 	 	    var currUser, currRule, currRole;
 	 	    var bvalidUrl  = false, bvalidRole = false ; 
 	 	    var countRules  =  Object.keys(rules.parfeu).length , countRoles = roles.length;
@@ -126,15 +127,21 @@ var module_firewall = function(){
 
 	 	    		k++;
 	 	    	}
-
-
+	 	    	//if(bajax) console.log(req.user.local);
 	 	    	if(bvalidCurrRole)
 	 	    	{
 	 	    		next();
 	 	    	}
 	 	    	else
 	 	    	{
-	 	    		res.redirect(currRole.homeUrl);
+	 	    		if(bajax)
+	 	    		{
+	 	    			res.status(500);
+	 	    		}
+	 	    		else
+	 	    		{
+	 	    			res.redirect(currRole.homeUrl);
+	 	    	    }
 	 	    	}
 	 	    }
 	 	    // else return 404 Not Found

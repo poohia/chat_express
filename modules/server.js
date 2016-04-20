@@ -2,6 +2,7 @@ var express = require('express'),
     exp = express();
 
 require('express-reverse')(exp);
+var routes = require("./routes.js")(exp);
 
 
 
@@ -22,6 +23,7 @@ var chat_valid = require("./../views/common_modules/validate.module.js");
 var passport = require('passport');
 require('./passport')(passport);
 
+var User            = require('./../models/user');
 
 var fs = require('fs');
 var multer  = require('multer');
@@ -101,7 +103,6 @@ module.exports = function(app) {
     function route(){
              exp.get("index", '/', function(req, res, next) {
                 res.render('index',{'flashMessage' : req.flash("message")});
-
              });
              exp.post("login", '/login', passport.authenticate('local-login', {
                   successRedirect : '/', // redirect to the secure profile section
@@ -124,6 +125,23 @@ module.exports = function(app) {
 
               exp.get("my-account","/my-account",function(req, res, next){
                 res.render("my-account");
+              });
+
+              exp.get("speudo","/speudo/:name",function(req, res, next){
+                User.findOne({ 'local.name' :  req.params.name }, function(err, user) {
+                  res.contentType("json");
+                  if (err)
+                    res.status(500);
+                  if(user)
+                  {
+                     
+                    res.send( JSON.stringify({speudo: true}));
+                  }
+                  else
+                  {
+                    res.send( JSON.stringify({speudo: false}));
+                  }
+                })
               });
     };
     return {
