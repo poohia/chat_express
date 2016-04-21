@@ -6,7 +6,7 @@ var CONTACT = function(){
 
 	function addContact(id_user, callback)
 	{
-		$.post("/user/add/",{'id_user' : id_user})
+		$.post("/contact/add/",{'id_user' : id_user})
        .done(callback)
        .fail(function(data){
         console.log(data);
@@ -19,21 +19,42 @@ var CONTACT = function(){
 		.done(callback)
 		.fail(function(data){
 			console.log(data);
-		})
+		});
 	};
 	function getRequestContact(callback)
 	{
-		$.get("/user/request")
+		$.get("/contact/request")
 		.done(callback)
 		.fail(function(data){
 			console.log(data);
+		});
+	};
+	function acceptRequestContact(id, callback)
+	{
+		$.post("/contact/request/accept/"+id)
+		.done(callback)
+		.fail(function(data){
+			console.log(data);
+		});
+	};
+	function refuseRequestContact(id, callback)
+	{
+		var url = "/contact/request/refuse/" + id ;
+		$.ajax({
+			url : url,
+			type : "DELETE"
 		})
-	}
+		.done(callback)
+		.fail(function(data){
 
+		});
+	}
 	return {
 		init : init,
 		addContact: addContact,
 		searchContact: searchContact,
-		getRequestContact : getRequestContact
+		getRequestContact : getRequestContact,
+		acceptRequestContact : acceptRequestContact,
+		refuseRequestContact : refuseRequestContact
 	}
 }();

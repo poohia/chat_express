@@ -16,9 +16,13 @@ var DASHBOARD = function()
       add_contact_modal : $("#addContactModal"),
       list_find_contact  : $("ul#list_find_contact"),
       icon_add_user     : "a.icon_add_user",
-      list_request_contact : $("#portlet-request-friend ul")
+      list_request_contact : $("#portlet-request-friend ul"),
+      icon_valid_contact : ".accepte-request-friend",
+      icon_refuse_contact : ".refuse-request-friend"
     };
 
+   var _listRequestContact ;
+   var _listContact ;
  
 
    function searchContact(e)
@@ -91,8 +95,13 @@ var DASHBOARD = function()
     function getRequestContact()
     {
       CONTACT.getRequestContact(function(data){
-        var li = _global.list_find_contact.data("prototype");
+        _listRequestContact = data ;
+        var li = _global.list_request_contact.data("prototype");
         $(" > * ",_global.list_request_contact).remove();
+
+        $(_global.icon_refuse_contact).off("click");
+        $(_global.icon_valid_contact).off("click");
+
         var countData = data.length;
         if(countData !== 0)
         {
@@ -104,14 +113,51 @@ var DASHBOARD = function()
             var id = user._id;
             var title = user.local.name;
             var content = "";
-            var $li = $((li).replace("__id__",id).replace("__img__",img).replace("__alt__",alt).replace("__title__",title).replace("__content__",content));
-            console.log(_global.list_request_contact);
-            _global.list_request_contact.append(li);
+            _li = li.replace("__id__",id).replace("__img__",img).replace("__alt__",alt).replace("__title__",title); 
+            _global.list_request_contact.append($(_li));
           }
-        }
-      })
-    }
 
+           $(_global.icon_refuse_contact).on("click", refuseRequestContact);
+           $(_global.icon_valid_contact).on("click", acceptRequestContact);
+
+        };
+      });
+    }
+    function refuseRequestContact()
+    {
+       var $icon = $(this);
+       var $li   = $icon.closest(".li-request-contact");
+       var id    = $li.data("id");
+       $icon.removeClass("fa-times").addClass("fa-spinner fa-pulse fa-fw");
+
+       CONTACT.refuseRequestContact(id, function(data){
+        if(data.work)
+           getRequestContact();
+         else
+         {
+           Materialize.toast('error ::: 10001', 4000);
+           $icon.addClass("fa-times").removeClass("fa-spinner fa-pulse fa-fw");
+         }
+       });
+    }
+    function acceptRequestContact()
+    {
+       var $icon = $(this);
+       var $li   = $icon.closest(".li-request-contact");
+       var id    = $li.data("id");
+       $icon.removeClass("fa-check").addClass("fa-spinner fa-pulse fa-fw");
+
+       CONTACT.acceptRequestContact(id, function(data){
+        if(data.work)
+           getRequestContact();
+         else
+         {
+           Materialize.toast('error ::: 10001', 4000);
+           $icon.addClass("fa-check").removeClass("fa-spinner fa-pulse fa-fw");
+         }
+       });
+
+    }
     function init()
     {
       $(_global.btn_collapse).sideNav();
@@ -146,6 +192,7 @@ var DASHBOARD = function()
          };
       });
       getRequestContact();
+
     };
 
     return {

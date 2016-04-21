@@ -186,8 +186,8 @@ module.exports = function(app) {
                   });
               });
 
-              /**** ADD USER ********************************/
-              exp.post("add-user","/user/add/", function(req, res, next){
+              /**** ADD CONTACT ********************************/
+              exp.post("add-user","/contact/add/", function(req, res, next){
                   var tmpSpool = new spoolContactsShema({_user_1 : req.user._id, _user_2 : req.body.id_user});
                   tmpSpool.saveNoRepeat(function(err, spool_saved){
                   //console.log(err);
@@ -200,13 +200,41 @@ module.exports = function(app) {
               );
 
               /**** GET REQUEST CONTACT *************************/
-              exp.get("get-request-contact","/user/request/", function(req, res, next){
+              exp.get("get-request-contact","/contact/request/", function(req, res, next){
                 res.contentType("json");
                 var spool = new spoolContactsShema({_id : req.user._id});
                   spool.getContactsOfSpool(function(contacts){
                     res.send(contacts);
                   });
               });
+              /*** ACCEPT REQUEST CONTACT **********************************/
+              exp.post("get-request-contact-accept","/contact/request/accept/:id", function(req, res, next){
+                res.contentType("json");
+                var contact = new Contact({_user_1 : req.user._id, _user_2 : req.params.id});
+                  contact.saveNoRepeat(function(err, contacts){
+                    if(err)
+                      res.send(err);
+                    else
+                      res.send(JSON.stringify({"work": "finished"}));
+                  });
+              });
+              /**** REFUSE REQUEST CONTACT ************************************/
+               exp.delete("get-request-contact-refuse","/contact/request/refuse/:id", function(req, res, next){
+                res.contentType("json");
+                spoolContactsShema.findOneAndRemove({_user_2 : req.user._id, _user_1 : req.params.id}, function(err){
+                  if(err)
+                    res.send(err);
+                  else
+                      res.send(JSON.stringify({"work": "finished"}));
+                });
+              });
+               /**** GET CONTACT **************************************************/
+               exp.get("get-contact","/contacts",function(req, rest, next){
+                res.contentType("json");
+                spoolContactsShema.findContacts({'_user_id' : req.user._id}, function(err, contacts){
+
+                });
+               });
     };
     return {
         create: create,

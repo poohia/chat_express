@@ -27,7 +27,7 @@ var module_firewall = function(){
 		"parfeu":[
 		 // For add rule put to begin into this json
 		 // {"url": {{ RegEx url }}, "role" : [ {"item" : role1}, {"item" : role2} ] }
-		 	{"url":"^/user/request/", "role" : [ {"item": user}, ] },
+		 	{"url":"^/contact/", "role" : [ {"item": user}, ] },
 		 	{"url":"^/user/", "role" : [ {"item": user}, ] },
 		 	{"url":"^/users/", "role" : [ {"item": user}, ] },
 		 	{"url":"^/speudo/", "role" : [ {"item": anonyme}, ] },
@@ -66,6 +66,7 @@ var module_firewall = function(){
 		 	{
 		 		req.user = module_user_anonyme.getAnonymeUser() ;
 		 	}
+
 		 	var btoken = false, bajax = req.xhr ; 
 	 	    var currUser, currRule, currRole;
 	 	    var bvalidUrl  = false, bvalidRole = false ; 
@@ -111,7 +112,6 @@ var module_firewall = function(){
 
 	 	    	j++ ; 
 	 	    }
-
 	 	    // If url and role exist  and token  is empty 
 	 	    if(bvalidRole && bvalidUrl && btoken)
 	 	    {

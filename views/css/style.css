@@ -99,6 +99,13 @@ main {
   #dashboard ul#list_find_contact {
     max-height: 250px;
     overflow: auto; }
+  #dashboard #portlet-request-friend ul {
+    max-height: 100px;
+    overflow: auto; }
+    #dashboard #portlet-request-friend ul .li-request-contact i {
+      float: right;
+      margin-left: 5px;
+      cursor: pointer; }
 
 .hidden {
   display: none; }

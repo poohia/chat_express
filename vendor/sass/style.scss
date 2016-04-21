@@ -136,6 +136,17 @@ main{
 	    max-height: 250px;
 	    overflow: auto;
 	}
+	#portlet-request-friend ul
+	{
+		max-height: 100px;
+   		overflow: auto;
+   		.li-request-contact i
+   		{
+			float: right;
+			margin-left : 5px;
+			cursor: pointer;
+   		}
+	}
 }
 
 .hidden
@@ -164,3 +175,4 @@ main{
 	right: 0;
 	cursor: pointer;
 }
+
