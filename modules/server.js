@@ -19,6 +19,8 @@ var hash = require("./hash")(exp);
 var firewall = require("./../middlewars/firewall");
 var validate = require("./../middlewars/validate");
 var chat_valid = require("./../views/common_modules/validate.module.js");
+var async = require('async');
+
 
 var passport = require('passport');
 require('./passport')(passport);
@@ -113,9 +115,35 @@ module.exports = function(app) {
                   failureRedirect : '/', // redirect back to the signup page if there is an error
                   failureFlash : true // allow flash messages
              }));
+
+             /***** DASHBOARD ****************************************************/
              exp.get("dashboard", '/dashboard', function(req, res, next){
-                res.render('dashboard', {'user' : req.user.local});
+                  res.render('dashboard', {'user' : req.user.local});
+                  /*var spoolContacts ="test";
+                  var spool = new spoolContactsShema({_id : req.user._id});
+                  spool.getContactsOfSpool(function(){
+                    console.log("i'm here!");
+
+                  });*/
+                  
+             /*async.parallel([
+                    function(callback){
+                        spool.getContactsOfSpool(function(users){
+                          spoolContacts = users;
+                          callback();
+                        });
+                    },
+                    function(callback){
+                      callback();
+                    }
+                  ], function(){
+                     res.render('dashboard', {'user' : req.user.local, 'spoolContacts' : spoolContacts });
+                    //res.end("ok!");
+                    next();
+                });
+                //res.render('dashboard', {'user' : req.user.local, 'spoolContacts' : spoolContacts });*/
              });
+
              exp.post("logout", "/logout", function(req, res, next){
                 req.logout();
                 res.redirect('/');
@@ -170,6 +198,15 @@ module.exports = function(app) {
                   });
                 }
               );
+
+              /**** GET REQUEST CONTACT *************************/
+              exp.get("get-request-contact","/user/request/", function(req, res, next){
+                res.contentType("json");
+                var spool = new spoolContactsShema({_id : req.user._id});
+                  spool.getContactsOfSpool(function(contacts){
+                    res.send(contacts);
+                  });
+              });
     };
     return {
         create: create,

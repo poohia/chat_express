@@ -1,7 +1,7 @@
-$(function(){
+$(document).ready(function(){
   DASHBOARD.init();
-})
-
+  CONTACT.init();
+});
 var DASHBOARD = function()
 {
 
@@ -15,7 +15,8 @@ var DASHBOARD = function()
       $input_search_value : $("#search_contact_value"),
       add_contact_modal : $("#addContactModal"),
       list_find_contact  : $("ul#list_find_contact"),
-      icon_add_user     : "a.icon_add_user"
+      icon_add_user     : "a.icon_add_user",
+      list_request_contact : $("#portlet-request-friend ul")
     };
 
  
@@ -27,8 +28,8 @@ var DASHBOARD = function()
       if(tmp_contact.length > 0)
       {
           $(_global.btn_search).addClass("disabled");
-          $.get("/users/"+ tmp_contact)
-            .done(function(data){
+          CONTACT.searchContact(tmp_contact, 
+          function(data){
               var users = data.users;
               if(users.length > 0)
               {
@@ -60,12 +61,7 @@ var DASHBOARD = function()
 
               }
             })
-            .fail(function(data){
-              console.log(data);
-            })
-            .always(function(){
-              $(_global.btn_search).removeClass("disabled");
-            });
+           $(_global.btn_search).removeClass("disabled");
        }
        else
        {
@@ -83,16 +79,38 @@ var DASHBOARD = function()
        curr_icon.removeClass("fa-user-plus").addClass("fa-spinner fa-pulse fa-fw");
        var  cuurLi    = $that.closest("li"); 
        var  id_user   = cuurLi.data("id");
-       $.post("/user/add/",{'id_user' : id_user})
-       .done(function(data){
+
+       CONTACT.addContact(id_user, function(data)
+       {
           curr_icon.removeClass("fa-spinner fa-pulse fa-fw").addClass("fa-check");
           $that.off("click");
-       })
-       .fail(function(data){
-        console.log(data);
-       })   
+       });
+
     };
 
+    function getRequestContact()
+    {
+      CONTACT.getRequestContact(function(data){
+        var li = _global.list_find_contact.data("prototype");
+        $(" > * ",_global.list_request_contact).remove();
+        var countData = data.length;
+        if(countData !== 0)
+        {
+          for(var i = 0 ; i < countData ; i++)
+          {
+            var user = data[i];
+            var img = user.local.avatar;
+            var alt = "avatar";
+            var id = user._id;
+            var title = user.local.name;
+            var content = "";
+            var $li = $((li).replace("__id__",id).replace("__img__",img).replace("__alt__",alt).replace("__title__",title).replace("__content__",content));
+            console.log(_global.list_request_contact);
+            _global.list_request_contact.append(li);
+          }
+        }
+      })
+    }
 
     function init()
     {
@@ -127,6 +145,7 @@ var DASHBOARD = function()
             searchContact(event);
          };
       });
+      getRequestContact();
     };
 
     return {

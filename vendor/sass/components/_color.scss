@@ -413,7 +413,7 @@ $colors: (
  /* 25 . Theme color ( by jordan azoulay )
     ======================================================================== */
 
-    .theme-color
+.theme-color
 {
    @extend .red, .lighten-2;
 }

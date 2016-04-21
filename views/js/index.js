@@ -1,7 +1,7 @@
-$(function(){
-	INDEX.init();
-});
 
+$(document).ready(function(){
+	INDEX.init();
+})
 var INDEX = function(){
 
 	var _global = {
