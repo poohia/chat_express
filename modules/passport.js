@@ -5,6 +5,8 @@ var User            = require('./../models/user');
 var hash = require("./hash")();
 
 var firewall = require("./../middlewars/firewall.js").firewall();
+var module_user_anonyme = require("./../models/anonyme_user")();
+
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -41,10 +43,13 @@ module.exports = function(passport) {
     },
     function(req, email, password, done) {
 
+
+
         
         // asynchronous
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
+
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
@@ -105,15 +110,18 @@ module.exports = function(passport) {
     function(req, email, password, done) { // callback with email and password from our form
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
+        /**, 'local.password' : hash.hashUserPassword(password)**/
         User.findOne({ 'local.email' :  email }, function(err, user) {
-            if(!hash.valisUserPassword(password, user.local.password))
-            {
-                user = null ;
-            }
+
             // if there are any errors, return the error before anything else
             if (err)
                 return done(err);
 
+            // test password
+           if(user && !hash.valisUserPassword(password, user.local.password) )
+            {
+                user = null ;
+            }
             // if no user is found, return the message
             if (!user)
                 return done(null, false, req.flash('message', 'You entered an email address/password combination that doesn\'t match.')); // req.flash is the way to set flashdata using connect-flash
