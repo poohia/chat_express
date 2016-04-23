@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var async = require('async');
+var User = require("./user");
 
 
 var contactSchema = mongoose.Schema({
@@ -49,32 +51,43 @@ contactSchema.methods.saveNoRepeat = function(callback){
 	})
 };
 
-/*
+
 contactSchema.methods.findContacts = function(callback){
 	var contactModel = this.model("Contact");
-	var params =  {'_user_1' : this._user_id};
-	var params2 =  {'_user_2' : this._user_id};
-	contactModel.find(params,function(err, contact){
+	var params =  {'_user_1' : this._id};
+	var params2 =  {'_user_2' : this._id};
 
-		if(Object.keys(contact).length  > 0)
-		{
-			callback(err, contact);
-		}
-		else
-		{
-			contactModel.find(params2,function(err, contact){
 
-				if(Object.keys(contact).length  > 0)
-				{
-					callback(err, contact);
-				}
-				else
-				{
-					
-				}
-			}
-		}
-    }
-}*/
+	async.parallel([
+		// find contacts 
+		function(cb)
+		{
+			contactModel.find({$or :[params, params2]},function(err, contacts){
+				if(err || !contacts)
+					cb(err, null);
+
+			    async.map(contacts, 
+			    function(contact, done){
+			     var _id = (this._id == contact._user_2)? contact._user_1 : contact._user_2 ;
+				 User.findOne({"_id" : _id},"local.name local.avatar" ,function(err, user){
+					 	if(err)
+					 	 	done(err, null);
+				 	 	else
+				 	 	{
+					 		done(null, user);
+				 	 	}	
+				 	})
+				 
+			}, 
+			function(err, user_array){ // done
+				cb(err, user_array);
+				})}
+		)},
+
+	],
+	   callback	
+	);
+
+}
 
 module.exports = mongoose.model('Contact', contactSchema);

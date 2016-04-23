@@ -120,30 +120,18 @@ module.exports = function(app) {
 
              /***** DASHBOARD ****************************************************/
              exp.get("dashboard", '/dashboard', function(req, res, next){
-                  res.render('dashboard', {'user' : req.user.local});
-                  /*var spoolContacts ="test";
-                  var spool = new spoolContactsShema({_id : req.user._id});
-                  spool.getContactsOfSpool(function(){
-                    console.log("i'm here!");
+                async.parallel([
+                  function(callback){
+                  var contact = new Contact({'_id' : req.user._id});
+                  contact.findContacts(function(err, contacts){
+                    callback(err, contacts);
+                  });
+                },
 
-                  });*/
-                  
-             /*async.parallel([
-                    function(callback){
-                        spool.getContactsOfSpool(function(users){
-                          spoolContacts = users;
-                          callback();
-                        });
-                    },
-                    function(callback){
-                      callback();
-                    }
-                  ], function(){
-                     res.render('dashboard', {'user' : req.user.local, 'spoolContacts' : spoolContacts });
-                    //res.end("ok!");
-                    next();
-                });
-                //res.render('dashboard', {'user' : req.user.local, 'spoolContacts' : spoolContacts });*/
+                ],function(err, contacts){
+                  var _contacts = (contacts !== null)? contacts[0][0] : null;
+                  res.render('dashboard', {'user' : req.user.local, 'twig_contacts' : _contacts});
+                })
              });
 
              exp.post("logout", "/logout", function(req, res, next){
