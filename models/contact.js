@@ -49,7 +49,7 @@ contactSchema.methods.saveNoRepeat = function(callback){
 	})
 };
 
-
+/*
 contactSchema.methods.findContacts = function(callback){
 	var contactModel = this.model("Contact");
 	var params =  {'_user_1' : this._user_id};
@@ -72,9 +72,9 @@ contactSchema.methods.findContacts = function(callback){
 				{
 					
 				}
-			};
-		};
-	};
-};
+			}
+		}
+    }
+}*/
 
 module.exports = mongoose.model('Contact', contactSchema);

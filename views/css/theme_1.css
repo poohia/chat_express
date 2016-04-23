@@ -1,0 +1,19 @@
+.theme-color
+{
+   background-color : #ff7043 !important;
+}
+.theme-color-text
+{
+   color: #ff7043 !important;
+}
+.theme-color-2
+{
+   background-color: #81c784 !important;
+}
+.theme-color-text-2
+{
+   color: #81c784 !important;
+}
+
+::-moz-selection { color: white;  background: #81c784; }
+::selection      { color: white;  background: #81c784; } 

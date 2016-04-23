@@ -29,6 +29,8 @@ require('./passport')(passport);
 var User            = require('./../models/user');
 var Contact            = require('./../models/contact');
 var spoolContactsShema  = require('./../models/spool_contact');
+var module_user_anonyme = require("./../models/anonyme_user")();
+
 /**************************************************/
 
 var fs = require('fs');
@@ -146,6 +148,7 @@ module.exports = function(app) {
 
              exp.post("logout", "/logout", function(req, res, next){
                 req.logout();
+                req.user = module_user_anonyme.getAnonymeUser() ;
                 res.redirect('/');
              });
               // process the signup form
