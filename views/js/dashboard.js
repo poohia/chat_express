@@ -18,7 +18,10 @@ var DASHBOARD = function()
       icon_add_user     : "a.icon_add_user",
       list_request_contact : $("#portlet-request-friend ul"),
       icon_valid_contact : ".accepte-request-friend",
-      icon_refuse_contact : ".refuse-request-friend"
+      icon_refuse_contact : ".refuse-request-friend",
+      list_contact   : $("#portlet-friends ul"),
+      btn_refresh_contact : "i.refresh-contact",
+      btn_refresh_spool : "i.refresh-spool"
     };
 
    var _listRequestContact ;
@@ -94,10 +97,10 @@ var DASHBOARD = function()
 
     function getRequestContact()
     {
+      $(" > * ",_global.list_request_contact).remove();
       CONTACT.getRequestContact(function(data){
         _listRequestContact = data ;
         var li = _global.list_request_contact.data("prototype");
-        $(" > * ",_global.list_request_contact).remove();
 
         $(_global.icon_refuse_contact).off("click");
         $(_global.icon_valid_contact).off("click");
@@ -132,7 +135,7 @@ var DASHBOARD = function()
 
        CONTACT.refuseRequestContact(id, function(data){
         if(data.work)
-           getRequestContact();
+           refreshDashboard();
          else
          {
            Materialize.toast('error ::: 10001', 4000);
@@ -149,7 +152,9 @@ var DASHBOARD = function()
 
        CONTACT.acceptRequestContact(id, function(data){
         if(data.work)
-           getRequestContact();
+        {
+           refreshDashboard();
+        }
          else
          {
            Materialize.toast('error ::: 10001', 4000);
@@ -157,6 +162,33 @@ var DASHBOARD = function()
          }
        });
 
+    };
+    function getContacts()
+    {
+      $(" > *", _global.list_contact).remove();
+      CONTACT.getContacts(function(contacts){
+        if(contacts && contacts.length > 0)
+        {
+          var li = _global.list_contact.data("prototype");
+          for(var i = 0 ; i < contacts.length ; i++)
+          {
+              var contact = contacts[0][i];
+              var img = contact.local.avatar;
+              var alt = "avatar";
+              var id = contact._id;
+              var title = contact.local.name;
+              var content = "";
+              var $li = $((li).replace("__id__",id).replace("__img__",img).replace("__alt__",alt).replace("__title__",title).replace("__content__",content));
+              _global.list_contact.append($li);
+          }
+        }
+      })
+    };
+
+    function refreshDashboard()
+    {
+      getRequestContact();
+      getContacts();
     }
     function init()
     {
@@ -191,7 +223,12 @@ var DASHBOARD = function()
             searchContact(event);
          };
       });
+
+      $(_global.btn_refresh_spool).on("click", getRequestContact);
+      $(_global.btn_refresh_contact).on("click", getContacts);
+
       getRequestContact();
+      getContacts();
 
     };
 

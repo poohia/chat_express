@@ -46,8 +46,16 @@ var CONTACT = function(){
 		})
 		.done(callback)
 		.fail(function(data){
-
+			console.log(data);
 		});
+	};
+	function getContacts(callback)
+	{
+		$.get("/contacts")
+		.done(callback)
+		.fail(function(data){
+			console.log(data);
+		})
 	}
 	return {
 		init : init,
@@ -55,6 +63,7 @@ var CONTACT = function(){
 		searchContact: searchContact,
 		getRequestContact : getRequestContact,
 		acceptRequestContact : acceptRequestContact,
-		refuseRequestContact : refuseRequestContact
+		refuseRequestContact : refuseRequestContact,
+		getContacts : getContacts
 	}
 }();

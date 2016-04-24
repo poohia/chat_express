@@ -9,7 +9,6 @@ var contactSchema = mongoose.Schema({
     _user_2 : { type: String, ref : 'User' }
 });
 
-
 contactSchema.methods.saveNoRepeat = function(callback){
 	var contactModel = this.model("Contact");
 	var spoolModel = this.model("SpoolContacts");
@@ -56,6 +55,7 @@ contactSchema.methods.findContacts = function(callback){
 	var contactModel = this.model("Contact");
 	var params =  {'_user_1' : this._id};
 	var params2 =  {'_user_2' : this._id};
+	var my_id = this._id ;
 
 
 	async.parallel([
@@ -69,14 +69,16 @@ contactSchema.methods.findContacts = function(callback){
 			    async.map(contacts, 
 			    function(contact, done){
 			     var _id = (this._id == contact._user_2)? contact._user_1 : contact._user_2 ;
-				 User.findOne({"_id" : _id},"local.name local.avatar" ,function(err, user){
+				 User.findOne({"_id" : _id},"local.name local.avatar" )
+				 .where('_id').ne(my_id)
+				 .exec(function(err, user){
 					 	if(err)
 					 	 	done(err, null);
 				 	 	else
 				 	 	{
 					 		done(null, user);
 				 	 	}	
-				 	})
+				 	});
 				 
 			}, 
 			function(err, user_array){ // done

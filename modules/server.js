@@ -25,6 +25,14 @@ var async = require('async');
 var passport = require('passport');
 require('./passport')(passport);
 
+/*** CONTROLLERS ***********************************/
+
+var pageController = require("./../controllers/pages.controller")(exp);
+var usersController  = require("./../controllers/users.controller")(exp);
+
+
+/*****************************************************/
+
 /**** MODELS ***************************************/
 var User            = require('./../models/user');
 var Contact            = require('./../models/contact');
@@ -109,9 +117,7 @@ module.exports = function(app) {
     };
 
     function route(){
-             exp.get("index", '/', function(req, res, next) {
-                res.render('index',{'flashMessage' : req.flash("message")});
-             });
+             exp.get("index", '/',pageController.index);
              exp.post("login", '/login', passport.authenticate('local-login', {
                   successRedirect : '/', // redirect to the secure profile section
                   failureRedirect : '/', // redirect back to the signup page if there is an error
@@ -119,20 +125,7 @@ module.exports = function(app) {
              }));
 
              /***** DASHBOARD ****************************************************/
-             exp.get("dashboard", '/dashboard', function(req, res, next){
-                async.parallel([
-                  function(callback){
-                  var contact = new Contact({'_id' : req.user._id});
-                  contact.findContacts(function(err, contacts){
-                    callback(err, contacts);
-                  });
-                },
-
-                ],function(err, contacts){
-                  var _contacts = (contacts !== null)? contacts[0][0] : null;
-                  res.render('dashboard', {'user' : req.user.local, 'twig_contacts' : _contacts});
-                })
-             });
+             exp.get("dashboard", '/dashboard', pageController.dashboard);
 
              exp.post("logout", "/logout", function(req, res, next){
                 req.logout();
@@ -150,82 +143,22 @@ module.exports = function(app) {
                 res.render("my-account");
               });
 
-              exp.get("speudo","/speudo/:name",function(req, res, next){
-                res.contentType("json");
-                User.findOne({ 'local.name' :  req.params.name }, function(err, user) {
-                  if (err)
-                    res.status(500);
-                  if(user)
-                  {
-                     
-                    res.send( JSON.stringify({speudo: true}));
-                  }
-                  else
-                  {
-                    res.send( JSON.stringify({speudo: false}));
-                  }
-                })
-              });
+              exp.get("speudo","/speudo/:name",usersController.getSpeudo);
 
               /*** GET USER when user.local.name  like :name  **********************/
-              exp.get("users","/users/:name", function(req, res, next){
-                  res.contentType("json");
-                  User.find({ 'local.name' : new RegExp(req.params.name, "i")},'local.name local.avatar',function(err, users){
-                    if (err)
-                       res.status(500);
-                    res.send( JSON.stringify({users: users}));
-                  });
-              });
+              exp.get("users","/users/:name",  usersController.getSpeudoLike);
 
               /**** ADD CONTACT ********************************/
-              exp.post("add-user","/contact/add/", function(req, res, next){
-                  var tmpSpool = new spoolContactsShema({_user_1 : req.user._id, _user_2 : req.body.id_user});
-                  tmpSpool.saveNoRepeat(function(err, spool_saved){
-                  //console.log(err);
-                  res.contentType("json");
-                    if(err)
-                      res.status(500);
-                    res.send(JSON.stringify({"work": "finished"}));
-                  });
-                }
-              );
+              exp.post("add-user","/contact/add/", usersController.addContact);
 
               /**** GET REQUEST CONTACT *************************/
-              exp.get("get-request-contact","/contact/request/", function(req, res, next){
-                res.contentType("json");
-                var spool = new spoolContactsShema({_id : req.user._id});
-                  spool.getContactsOfSpool(function(contacts){
-                    res.send(contacts);
-                  });
-              });
+              exp.get("get-request-contact","/contact/request/", usersController.getRequestContactAjax);
               /*** ACCEPT REQUEST CONTACT **********************************/
-              exp.post("get-request-contact-accept","/contact/request/accept/:id", function(req, res, next){
-                res.contentType("json");
-                var contact = new Contact({_user_1 : req.user._id, _user_2 : req.params.id});
-                  contact.saveNoRepeat(function(err, contacts){
-                    if(err)
-                      res.send(err);
-                    else
-                      res.send(JSON.stringify({"work": "finished"}));
-                  });
-              });
+              exp.post("get-request-contact-accept","/contact/request/accept/:id", usersController.acceptRequest);
               /**** REFUSE REQUEST CONTACT ************************************/
-               exp.delete("get-request-contact-refuse","/contact/request/refuse/:id", function(req, res, next){
-                res.contentType("json");
-                spoolContactsShema.findOneAndRemove({_user_2 : req.user._id, _user_1 : req.params.id}, function(err){
-                  if(err)
-                    res.send(err);
-                  else
-                      res.send(JSON.stringify({"work": "finished"}));
-                });
-              });
+               exp.delete("get-request-contact-refuse","/contact/request/refuse/:id", usersController.refuseRequest);
                /**** GET CONTACT **************************************************/
-               exp.get("get-contact","/contacts",function(req, rest, next){
-                res.contentType("json");
-                spoolContactsShema.findContacts({'_user_id' : req.user._id}, function(err, contacts){
-
-                });
-               });
+               exp.get("get-contact","/contacts",usersController.getContactsAjax);
     };
     return {
         create: create,
