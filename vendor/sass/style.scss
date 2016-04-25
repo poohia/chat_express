@@ -151,7 +151,17 @@ main{
    		}
 	}
 }
+#portlet-friends
+{
+	.btn-remove-contact
+     {
+        cursor: pointer;
+        float: right;
+        margin-left: 3px;
+        color: orange;
+     }
 
+}
 .hidden
 {
 	display : none;
