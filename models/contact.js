@@ -68,8 +68,8 @@ contactSchema.methods.findContacts = function(callback){
 
 			    async.map(contacts, 
 			    function(contact, done){
-			     var _id = (this._id == contact._user_2)? contact._user_1 : contact._user_2 ;
-				 User.findOne({"_id" : _id},"local.name local.avatar" )
+
+				 User.findOne({$or: [{"_id" : contact._user_1}, {"_id" : contact._user_2}]},"local.name local.avatar" )
 				 .where('_id').ne(my_id)
 				 .exec(function(err, user){
 					 	if(err)

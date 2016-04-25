@@ -65,7 +65,6 @@ module.exports = function(app){
 		res.contentType("json");
         var contact = new Contact({_user_1 : req.user._id, _user_2 : req.params.id});
         contact.saveNoRepeat(function(err, contact){
-        	console.log(contact);
             if(err)
               res.send(err);
             else
@@ -95,6 +94,23 @@ module.exports = function(app){
          	res.send(contacts);
        });
 	}
+	function deleteContact(req, res, next)
+	{
+       res.contentType("json");
+       var user_id = req.user._id;
+       var contact_id = req.params.id;
+       Contact
+       //.findOneAndRemove({$or : [{ '_user_1': user_id, '_user_2' : contact_id }, { '_user_2': user_id, '_user_1' : contact_id }]})
+       .findOneAndRemove()
+       .or([{ '_user_1': user_id, '_user_2' : contact_id }, { '_user_2': user_id, '_user_1' : contact_id }])
+	   .exec(function(err, contact){
+            if(err)
+              res.send(err);
+            else
+              res.send(JSON.stringify({"work": "finished"}));
+
+	   });
+	}
 
 	return {
 		getSpeudo : getSpeudo,
@@ -103,6 +119,7 @@ module.exports = function(app){
 		getRequestContactAjax : getRequestContactAjax,
 		acceptRequest : acceptRequest,
 		refuseRequest : refuseRequest,
-		getContactsAjax : getContactsAjax
+		getContactsAjax : getContactsAjax,
+		deleteContact  : deleteContact
 	}
 }

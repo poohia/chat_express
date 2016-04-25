@@ -89,7 +89,7 @@ module.exports = function(app) {
             // middleware that parse cookie header and populate req.cookies
             exp.use(cookieParser("chat_express_"));
             // middleware session 
-            exp.use(session({ secret: 'chat_express_S3CRE7', cookie: { maxAge: 60000},  resave: false, saveUninitialized: true}));
+            exp.use(session({ secret: 'chat_express_S3CRE7', cookie: { maxAge: 3600000},  resave: false, saveUninitialized: true}));
 
 
             // compression middleware that enable deflate and gzip
@@ -156,9 +156,12 @@ module.exports = function(app) {
               /*** ACCEPT REQUEST CONTACT **********************************/
               exp.post("get-request-contact-accept","/contact/request/accept/:id", usersController.acceptRequest);
               /**** REFUSE REQUEST CONTACT ************************************/
-               exp.delete("get-request-contact-refuse","/contact/request/refuse/:id", usersController.refuseRequest);
+              exp.delete("get-request-contact-refuse","/contact/request/refuse/:id", usersController.refuseRequest);
                /**** GET CONTACT **************************************************/
-               exp.get("get-contact","/contacts",usersController.getContactsAjax);
+              exp.get("/contacts/", usersController.getContactsAjax);
+              /**** DELETE CONTACT *************************************************/
+              exp.delete("/contact/:id", usersController.deleteContact);
+
     };
     return {
         create: create,

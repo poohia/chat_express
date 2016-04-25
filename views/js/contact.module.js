@@ -51,12 +51,25 @@ var CONTACT = function(){
 	};
 	function getContacts(callback)
 	{
-		$.get("/contacts")
+		$.get("/contacts/")
 		.done(callback)
 		.fail(function(data){
 			console.log(data);
 		})
+	};
+	function removeContact(id, callback)
+	{
+		var url = "/contact/" + id;
+	   $.ajax({
+	   	 url: url,
+	   	 type: "DELETE"
+	   })
+	   .done(callback)
+	   .fail(function(data){
+	   	console.log(data);
+	   })
 	}
+
 	return {
 		init : init,
 		addContact: addContact,
@@ -64,6 +77,7 @@ var CONTACT = function(){
 		getRequestContact : getRequestContact,
 		acceptRequestContact : acceptRequestContact,
 		refuseRequestContact : refuseRequestContact,
-		getContacts : getContacts
+		getContacts : getContacts,
+		removeContact: removeContact
 	}
 }();

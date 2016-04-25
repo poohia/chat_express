@@ -21,7 +21,8 @@ var DASHBOARD = function()
       icon_refuse_contact : ".refuse-request-friend",
       list_contact   : $("#portlet-friends ul"),
       btn_refresh_contact : "i.refresh-contact",
-      btn_refresh_spool : "i.refresh-spool"
+      btn_refresh_spool : "i.refresh-spool",  
+      btn_remove_contact : "#portlet-friends i.btn-remove-contact"
     };
 
    var _listRequestContact ;
@@ -167,10 +168,10 @@ var DASHBOARD = function()
     {
       $(" > *", _global.list_contact).remove();
       CONTACT.getContacts(function(contacts){
-        if(contacts && contacts.length > 0)
+        if(contacts && contacts[0].length > 0)
         {
           var li = _global.list_contact.data("prototype");
-          for(var i = 0 ; i < contacts.length ; i++)
+          for(var i = 0 ; i < contacts[0].length ; i++)
           {
               var contact = contacts[0][i];
               var img = contact.local.avatar;
@@ -181,10 +182,15 @@ var DASHBOARD = function()
               var $li = $((li).replace("__id__",id).replace("__img__",img).replace("__alt__",alt).replace("__title__",title).replace("__content__",content));
               _global.list_contact.append($li);
           }
+          $(_global.btn_remove_contact).click( removeContact);
         }
       })
     };
-
+    function removeContact()
+    {
+       var id = $(this).closest("li.li-contact").data("id");
+       CONTACT.removeContact(id, refreshDashboard);
+    }
     function refreshDashboard()
     {
       getRequestContact();

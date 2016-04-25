@@ -6,3 +6,5 @@ data
 
 #uploads
 #views/uploads
+
+.sass-cache

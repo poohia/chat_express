@@ -43,6 +43,7 @@
     "gulp-csso": "latest",
     "gulp-load-plugins": "latest",
     "gulp-rename": "latest",
+    "gulp-ruby-sass": "^2.0.6",
     "gulp-sass": "latest",
     "run-sequence": "^1.1.5"
   }
