@@ -1,4 +1,8 @@
 var CONTACT = function(){
+
+	var _contacts ;
+	var _requestContact ;
+
 	function init()
 	{
 
@@ -24,7 +28,10 @@ var CONTACT = function(){
 	function getRequestContact(callback)
 	{
 		$.get("/contact/request")
-		.done(callback)
+		.done(function(data){
+			_requestContact = data;
+			callback(data);
+		})
 		.fail(function(data){
 			console.log(data);
 		});
@@ -52,7 +59,10 @@ var CONTACT = function(){
 	function getContacts(callback)
 	{
 		$.get("/contacts/")
-		.done(callback)
+		.done(function(data){
+			_contacts = data[0] ;
+			callback(data) ;
+		})
 		.fail(function(data){
 			console.log(data);
 		})
@@ -68,6 +78,16 @@ var CONTACT = function(){
 	   .fail(function(data){
 	   	console.log(data);
 	   })
+	};
+
+	function findRequestContactById(id)
+	{
+		for(var i = 0 ; i < _requestContact.length ; i++)
+		{
+			var contact = _requestContact[i];
+			if(contact._id === id)
+				return contact ;
+		}
 	}
 
 	return {
@@ -78,6 +98,7 @@ var CONTACT = function(){
 		acceptRequestContact : acceptRequestContact,
 		refuseRequestContact : refuseRequestContact,
 		getContacts : getContacts,
-		removeContact: removeContact
+		removeContact: removeContact,
+		findRequestContactById : findRequestContactById
 	}
 }();

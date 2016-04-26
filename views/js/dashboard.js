@@ -49,12 +49,19 @@ var DASHBOARD = function()
                   for(var i = 0 ; i < users.length ; i++)
                   {
                       var user = users[i];
+            
+                      var exist = ($(CONTACT.findRequestContactById(user._id)).length !== 0);
                       var img = user.local.avatar;
                       var alt = "avatar";
                       var id = user._id;
                       var title = user.local.name;
                       var content = "";
                       var $li = $((li).replace("__id__",id).replace("__img__",img).replace("__alt__",alt).replace("__title__",title).replace("__content__",content));
+                      if(exist)
+                      {
+                            $(_global.icon_add_user + " > i ", $li ).removeClass("fa-user-plus").addClass("fa-check");
+                            $(_global.icon_add_user, $li).removeClass("icon_add_user");
+                      }
                       _global.list_find_contact.append($li);
                   }
                   _global.list_find_contact.fadeIn();
@@ -111,7 +118,7 @@ var DASHBOARD = function()
         {
           for(var i = 0 ; i < countData ; i++)
           {
-            var user = data[i];
+            var user = data[i] ;
             var img = user.local.avatar;
             var alt = "avatar";
             var id = user._id;
