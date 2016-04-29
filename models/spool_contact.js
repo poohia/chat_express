@@ -53,5 +53,30 @@ spoolContactsShema.methods.getContactsOfSpool = function(callback)
 
 
 }
+spoolContactsShema.methods.getMyRequest = function(callback)
+{
+	var spoolModel = this.model("SpoolContacts");
+	var params =  {'_user_1' : this._id }; 
+	var my_id = this._id ;
+	var users = new Array;
+	spoolModel.find(params,function(err, spools){
+		async.map(spools, function(spool, done){
+			User.findOne({"_id" : spool._user_2},"local.name local.avatar")
+			.where('_id').ne(my_id)
+			.exec(function(err, user){
+				 	if(err)
+				 	 	done(err);
+			 	 	else
+			 	 	{
+				 		done(null, user);
 
+			 	 	}	
+			 	});
+		}, function(err, user_array){
+			callback(user_array);
+		});
+	});
+
+
+}
 module.exports = mongoose.model('SpoolContacts', spoolContactsShema);

@@ -59,6 +59,14 @@ module.exports = function(app){
           res.send(contacts);
     	});
 	};
+	function getMyRequest(req, res, next)
+	{
+        res.contentType("json");
+        var spool = new spoolContactsShema({_id : req.user._id});
+        spool.getMyRequest(function(contacts){
+          res.send(contacts);
+    	});
+	}
 
 	function acceptRequest(req, res, next)
 	{
@@ -93,7 +101,8 @@ module.exports = function(app){
          else
          	res.send(contacts);
        });
-	}
+	};
+	
 	function deleteContact(req, res, next)
 	{
        res.contentType("json");
@@ -110,8 +119,20 @@ module.exports = function(app){
               res.send(JSON.stringify({"work": "finished"}));
 
 	   });
+	};
+	function deleteMyRequest(req, res, next)
+	{
+		res.contentType("json");
+		spoolContactsShema.findOneAndRemove({"_user_1" : req.user._id, "_user_2" : req.params.id})
+		.exec(function(err)
+		{
+			if(err)
+		     	res.send(err);
+			else
+		      res.send(JSON.stringify({"work": "finished"}));
+		});
+		
 	}
-
 	return {
 		getSpeudo : getSpeudo,
 		getSpeudoLike : getSpeudoLike,
@@ -120,6 +141,8 @@ module.exports = function(app){
 		acceptRequest : acceptRequest,
 		refuseRequest : refuseRequest,
 		getContactsAjax : getContactsAjax,
-		deleteContact  : deleteContact
+		deleteContact  : deleteContact,
+		getMyRequest : getMyRequest,
+		deleteMyRequest : deleteMyRequest
 	}
 }

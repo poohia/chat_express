@@ -2,6 +2,7 @@ $(document).ready(function(){
   DASHBOARD.init();
   CONTACT.init();
 });
+
 var DASHBOARD = function()
 {
 
@@ -22,11 +23,12 @@ var DASHBOARD = function()
       list_contact   : $("#portlet-friends ul"),
       btn_refresh_contact : "i.refresh-contact",
       btn_refresh_spool : "i.refresh-spool",  
-      btn_remove_contact : "#portlet-friends i.btn-remove-contact"
+      btn_remove_contact : "#portlet-friends i.btn-remove-contact",
+      list_my_request : $("#portlet-my-request-friend ul"),
+      btn_refresh_my_request : "i.refresh-my-spool",
+      btn_remove_my_request : "i.btn-remove-my-request-contact"
     };
 
-   var _listRequestContact ;
-   var _listContact ;
  
 
    function searchContact(e)
@@ -50,14 +52,16 @@ var DASHBOARD = function()
                   {
                       var user = users[i];
             
-                      var exist = ($(CONTACT.findRequestContactById(user._id)).length !== 0);
+                      var RequestExist = ($(CONTACT.findRequestContactById(user._id)).length !== 0);
+                      var ContactExist = ($(CONTACT.findContactById(user._id)).length !== 0);
+                      var MyRequestExist =  ($(CONTACT.findMyRequestById(user._id)).length !== 0);
                       var img = user.local.avatar;
                       var alt = "avatar";
                       var id = user._id;
                       var title = user.local.name;
                       var content = "";
                       var $li = $((li).replace("__id__",id).replace("__img__",img).replace("__alt__",alt).replace("__title__",title).replace("__content__",content));
-                      if(exist)
+                      if(RequestExist || ContactExist || MyRequestExist)
                       {
                             $(_global.icon_add_user + " > i ", $li ).removeClass("fa-user-plus").addClass("fa-check");
                             $(_global.icon_add_user, $li).removeClass("icon_add_user");
@@ -107,7 +111,6 @@ var DASHBOARD = function()
     {
       $(" > * ",_global.list_request_contact).remove();
       CONTACT.getRequestContact(function(data){
-        _listRequestContact = data ;
         var li = _global.list_request_contact.data("prototype");
 
         $(_global.icon_refuse_contact).off("click");
@@ -197,12 +200,48 @@ var DASHBOARD = function()
     {
        var id = $(this).closest("li.li-contact").data("id");
        CONTACT.removeContact(id, refreshDashboard);
+    };
+    
+    function getMyRequest()
+    {
+        $(" > *", _global.list_my_request).remove();
+        CONTACT.getMyRequest(function(contacts)
+        {
+
+             if(contacts && contacts.length > 0)
+             {
+                 var li = _global.list_my_request.data("prototype");
+                 for(var i = 0 ; i < contacts.length ; i++)
+                 {
+                      var contact = contacts[i];
+                      var img = contact.local.avatar;
+                      var alt = "avatar";
+                      var id = contact._id;
+                      var title = contact.local.name;
+                      var content = "";
+                      var $li = $((li).replace("__id__",id).replace("__img__",img).replace("__alt__",alt).replace("__title__",title).replace("__content__",content));
+                      _global.list_my_request.append($li);
+                 }
+                 $(_global.btn_remove_my_request).on("click", removeMyRequest);
+                 
+             }
+        });
+    };
+    function removeMyRequest()
+    {
+       var id = $(this).closest("li.li-myrequest").data("id");
+       CONTACT.removeMyRequest(id, getMyRequest);
     }
     function refreshDashboard()
     {
       getRequestContact();
       getContacts();
-    }
+     // getMyRequest();
+    };
+    
+    
+
+    
     function init()
     {
       $(_global.btn_collapse).sideNav();
@@ -239,9 +278,11 @@ var DASHBOARD = function()
 
       $(_global.btn_refresh_spool).on("click", getRequestContact);
       $(_global.btn_refresh_contact).on("click", getContacts);
+      $(_global.btn_refresh_my_request).on("click", getMyRequest);
 
       getRequestContact();
       getContacts();
+      getMyRequest();
 
     };
 

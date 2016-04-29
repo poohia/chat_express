@@ -3,6 +3,7 @@ var dirModules = __dirname + "/modules/"
 // SERVER
 app.server = require(dirModules + 'server')(app);
 app.server.create();
+//app.server._server = app.server.getServer();
 
 
 // DATABASE 
@@ -13,7 +14,8 @@ app.db.connect("chat_express");
 app.chat = require('./socket/chat')(app);
 app.socketRooms = require('./socket/rooms')(app);
 app.socketUsers = require('./socket/users')(app);
-app.socket = require('./socket/socket')(app);
-app.socket.create();
 */
+app.socket = require('./modules/socket')(app);
+app.socket.create();
+
 module.exports = app;

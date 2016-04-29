@@ -2,6 +2,7 @@ var CONTACT = function(){
 
 	var _contacts ;
 	var _requestContact ;
+	var _myRequest ; 
 
 	function init()
 	{
@@ -79,6 +80,19 @@ var CONTACT = function(){
 	   	console.log(data);
 	   })
 	};
+	function getMyRequest(callback)
+	{
+		$.get("/my-account/requests/")
+		.done(function(data)
+		   {
+		   	 _myRequest = data;
+		   	 callback(data);
+		   }
+		)
+		.fail(function(data){
+			console.log(data);
+		});
+	}
 
 	function findRequestContactById(id)
 	{
@@ -89,7 +103,38 @@ var CONTACT = function(){
 				return contact ;
 		}
 	}
-
+	function findContactById(id)
+	{
+		for(var i = 0 ; i < _contacts.length ; i++)
+		{
+			var contact = _contacts[i];
+			if(contact._id === id)
+				return contact ;
+		}
+	}
+	function findMyRequestById(id)
+	{
+		for(var i = 0 ; i < _myRequest.length ; i++)
+		{
+			var myrequest = _myRequest[i];
+			if(myrequest._id === id)
+				return myrequest ;
+		}
+	}
+	function removeMyRequest(id, callback)
+	{
+		var url = "/my-account/requests/" + id ;
+		$.ajax({
+		url: url,
+	   	type: "DELETE"
+		})
+		.done(callback)
+		.fail(function(data)
+		{
+			console.log(data)
+		}
+		);
+	}
 	return {
 		init : init,
 		addContact: addContact,
@@ -99,6 +144,10 @@ var CONTACT = function(){
 		refuseRequestContact : refuseRequestContact,
 		getContacts : getContacts,
 		removeContact: removeContact,
-		findRequestContactById : findRequestContactById
+		findRequestContactById : findRequestContactById,
+		getMyRequest : getMyRequest,
+		findContactById : findContactById,
+		findMyRequestById : findMyRequestById,
+		removeMyRequest : removeMyRequest
 	}
 }();

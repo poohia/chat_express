@@ -29,6 +29,7 @@ require('./passport')(passport);
 
 var pageController = require("./../controllers/pages.controller")(exp);
 var usersController  = require("./../controllers/users.controller")(exp);
+var roomsController  = require("./../controllers/rooms.controller")(exp);
 
 
 /*****************************************************/
@@ -78,6 +79,11 @@ module.exports = function(app) {
             this._server.listen(port);
             console.log("server start with number port "  +  port );
     };
+    
+    function getServer()
+    {
+        return this._server ; 
+    }
        
         // Configure the app
     function config(){
@@ -142,6 +148,10 @@ module.exports = function(app) {
               exp.get("my-account","/my-account",function(req, res, next){
                 res.render("my-account");
               });
+              /**** GET REQUEST  OF CURRENT USER *****************************/
+              exp.get("/my-account/requests/", usersController.getMyRequest);
+              /**** DELETE REQUEST OF CURRENT USER  **************************/
+              exp.delete("/my-account/requests/:id",usersController.deleteMyRequest);
 
               exp.get("speudo","/speudo/:name",usersController.getSpeudo);
 
@@ -161,12 +171,16 @@ module.exports = function(app) {
               exp.get("/contacts/", usersController.getContactsAjax);
               /**** DELETE CONTACT *************************************************/
               exp.delete("/contact/:id", usersController.deleteContact);
+              
+              exp.get("/room/123456", roomsController.room );
+              exp.get("/room/789", roomsController.room2 );
 
     };
     return {
         create: create,
         listen: listen,
         route : route,
-        config: config    
+        config: config,
+        getServer : getServer
     }
 }

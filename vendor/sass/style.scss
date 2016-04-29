@@ -150,17 +150,30 @@ main{
 			cursor: pointer;
    		}
 	}
+	#portlet-friends ul
+    {
+    	max-height: 300px;
+   		overflow: auto;
+		.btn-remove-contact
+	     {
+	        cursor: pointer;
+	        float: right;
+	        margin-left: 3px;
+	     }
+    }
+	#portlet-my-request-friend ul 
+	{
+		max-height: 100px;
+   		overflow: auto;
+   		.btn-remove-my-request-contact
+   		{
+			float: right;
+			margin-left : 5px;
+			cursor: pointer;
+   		}
+	}
 }
-#portlet-friends
-{
-	.btn-remove-contact
-     {
-        cursor: pointer;
-        float: right;
-        margin-left: 3px;
-     }
 
-}
 .hidden
 {
 	display : none;
