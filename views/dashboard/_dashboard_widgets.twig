@@ -1,9 +1,9 @@
-<ul class="col column s12 m4 dashbord_col_widget" id="widgets_list">
+<ul class="col column s12 m4 dashbord_col_widget column-profile" id="widgets_list">
   &nbsp;
   {% include "dashboard/widgets/_widget_myaccount.twig" %}
 </ul>
  
-<ul class="col column s12 m4 dashbord_col_widget">
+<ul class="col column s12 m4 dashbord_col_widget column-contacts">
  &nbsp;
   {% include "dashboard/widgets/_widget_contact.twig" %}
   {% include "dashboard/widgets/_widget_spool_contact.twig" %}
@@ -11,7 +11,8 @@
 
 </ul>
  
-<ul class="col column s12 m4 dashbord_col_widget">
+<ul class="col column s12 m4 dashbord_col_widget column-chats">
  &nbsp;
+</ul>
+{% include "dashboard/widgets/_widget_private_chat.twig" %}
 
-</li>

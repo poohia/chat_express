@@ -172,6 +172,10 @@ module.exports = function(app) {
               /**** DELETE CONTACT *************************************************/
               exp.delete("/contact/:id", usersController.deleteContact);
               
+              
+              exp.post("/room/create-private-room/:id", roomsController.createPrivateRoom);
+             
+              
               exp.get("/room/123456", roomsController.room );
               exp.get("/room/789", roomsController.room2 );
 

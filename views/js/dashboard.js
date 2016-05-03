@@ -1,6 +1,7 @@
 $(document).ready(function(){
   DASHBOARD.init();
   CONTACT.init();
+  CHAT.init();
 });
 
 var DASHBOARD = function()
@@ -26,7 +27,11 @@ var DASHBOARD = function()
       btn_remove_contact : "#portlet-friends i.btn-remove-contact",
       list_my_request : $("#portlet-my-request-friend ul"),
       btn_refresh_my_request : "i.refresh-my-spool",
-      btn_remove_my_request : "i.btn-remove-my-request-contact"
+      btn_remove_my_request : "i.btn-remove-my-request-contact",
+      btn_mini_portlet  : "i.btn-mini-portlet",
+      portlet_chat_private : $("#prototype-chat-private").data("prototype"),
+      column_chats : ".column-chats",
+      btn_create_private_chat : "i.private-chat"
     };
 
  
@@ -70,6 +75,7 @@ var DASHBOARD = function()
                   }
                   _global.list_find_contact.fadeIn();
                   $(_global.icon_add_user).on("click", addContact);
+                 
 
               }
               else
@@ -193,6 +199,7 @@ var DASHBOARD = function()
               _global.list_contact.append($li);
           }
           $(_global.btn_remove_contact).click( removeContact);
+          $(_global.btn_create_private_chat).on("click", createPrivateChat);
         }
       })
     };
@@ -231,7 +238,7 @@ var DASHBOARD = function()
     {
        var id = $(this).closest("li.li-myrequest").data("id");
        CONTACT.removeMyRequest(id, getMyRequest);
-    }
+    };
     function refreshDashboard()
     {
       getRequestContact();
@@ -239,8 +246,46 @@ var DASHBOARD = function()
      // getMyRequest();
     };
     
-    
+    function miniPortlet()
+    {
+         var $that = $(this);
+         var $portlet = $that.closest(".portlet");
+         $portlet = $(".portlet-content", $portlet ) ;
+         var $portlet_content = $(" > *", $portlet);
+         if($portlet.hasClass("mini-portlet"))
+         {
+               $portlet.animate({'height' : $portlet[0].scrollHeight}, function(){
+                   $portlet_content.css('visibility', 'visible');
+                   $portlet.removeClass("mini-portlet");
+                   $that.removeClass("fa-expand").addClass("fa-minus");
+               });
 
+               
+         }
+         else
+         {
+             $portlet.animate({'height' : 0}, function(){
+                 $portlet_content.css('visibility', 'hidden')
+                 $portlet.addClass("mini-portlet");
+                $that.addClass("fa-expand").removeClass("fa-minus");
+             });
+
+         }
+         
+           
+    };
+
+    function createPrivateChat()
+    {
+        var isShow = false;
+        var id = $(this).closest(".li-contact").data("id");
+        
+        CHAT.createPrivateRoom(id, function(data){
+            console.log(data);
+        });
+        
+        $(_global.column_chats).append(_global.portlet_chat_private.replace("__speudo1__","jordan").replace("__speudo2__","toto"));
+    }
     
     function init()
     {
@@ -283,7 +328,9 @@ var DASHBOARD = function()
       getRequestContact();
       getContacts();
       getMyRequest();
-
+      
+     $(_global.btn_mini_portlet).on("click", miniPortlet); 
+     
     };
 
     return {

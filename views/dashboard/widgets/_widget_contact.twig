@@ -1,12 +1,20 @@
 <li class="z-depth-1 portlet  white theme-color-text" id="portlet-friends">
 	<div class="portlet-header white ">
-		<span class="fa fa-users" aria-hidden="true"></span> Contact 
+	<span class="portlet-left">	<i class="fa fa-users" aria-hidden="true"></i> Contacts
+			<span class="portlet-actions">
+			<a class="fa fa-user-plus theme-color-text-2 modal-trigger" aria-hidden="true" href="#addContactModal"></a>
+			</span>
+	</span>
+
 		<i class="fa fa-times close-widget   theme-color-text-2" aria-hidden="true"></i>
+		<i class="fa fa-minus theme-color-text-2 btn-mini-portlet" aria-hidden="true"></i>
 		<i class="fa fa-refresh theme-color-text-2 refresh-contact" aria-hidden="true"></i>
-	  <a class="fa fa-user-plus theme-color-text-2 modal-trigger" aria-hidden="true" href="#addContactModal"></a>
+		
+		<span class="portlet-middle-title" > &nbsp; </span>
+		
 	</div>
 	<div class="portlet-content">
-		<ul class="collection " data-prototype='<li class="collection-item avatar opacity-1-important li-contact" data-id="__id__"><img src="__img__" alt="__alt__" class="circle"> <span class="title">__title__</span><i class="fa fa-times theme-color-text modal-trigger btn-remove-contact" aria-hidden="true" ></i>'>
+		<ul class="collection " data-prototype='<li class="collection-item avatar opacity-1-important li-contact" data-id="__id__"><img src="__img__" alt="__alt__" class="circle"> <span class="title">__title__</span>			<i class="fa fa-times theme-color-text modal-trigger btn-remove-contact" aria-hidden="true" ></i> <i class="fa fa-comment theme-color-text private-chat" title="private chat" aria-hidden="true" ></i>'>
 
 
 		</ul>

@@ -43,8 +43,13 @@ main{
 .portlet {
 	margin: 0 1em 1em 0;
 	padding: 0.3em;
+	.portlet-left
+	{
+		float: left;
+	}
 }
 .portlet-header {
+	text-align: center;
 	padding: 0.2em 0.3em;
 	margin-bottom: 0.5em;
 	position: relative;
@@ -52,8 +57,12 @@ main{
 .portlet-header:hover {
 	cursor : move ; 
 }
-.portlet-header > i, .portlet-header > a {
+.portlet-header > i {
 	float: right ;
+	margin-right: 6px;
+}
+.portlet-header > a {
+	float: middle;
 	margin-right: 6px;
 }
 .portlet-header > i:hover {
@@ -88,6 +97,13 @@ main{
 .text-center
 {
 	text-align: center;
+}
+.portlet-actions
+{
+	margin-left: 3px;
+	a {
+		margin-left: 6px;
+	}
 }
 #index{
 	position: relative;
@@ -154,7 +170,7 @@ main{
     {
     	max-height: 300px;
    		overflow: auto;
-		.btn-remove-contact
+		i.fa
 	     {
 	        cursor: pointer;
 	        float: right;
@@ -200,4 +216,7 @@ main{
 	right: 0;
 	cursor: pointer;
 }
-
+#prototype-chat-private
+{
+	display: none;
+}
