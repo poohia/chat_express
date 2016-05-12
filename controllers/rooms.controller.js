@@ -19,17 +19,18 @@ module.exports = function(app){
 	
 	function createPrivateRoom(req, res, next)
 	{
-		console.log(req.user._id, req.params.id);
-		var tmp_chat = new Chats(
-			{
-				_user_1 : req.user._id,
-			    _user_2 : req.params.id
-				
-			});
-		tmp_chat.createPrivateChatRoom(function(){
-			
-		})
-	}
+		res.contentType("json");
+		
+		var tmp_chat = new Chats();
+		tmp_chat.createPrivateChatRoom(req.user._id, req.params.id,
+			function(err, chat){
+				if(err)
+				   res.status(500).send(err);
+				 else 
+				   res.send(chat); 
+			}
+		);
+	};
 	
 	
 	return {

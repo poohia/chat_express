@@ -1,0 +1,9 @@
+{% if user %}
+<script>
+ var _user = {} ;
+ _user.name = '{{user.name}}';
+ _user.sexe = '{{user.sexe}}';
+ _user.avatar = '{{user.avatar}}';
+ _user.numero = '{{user.numero}}';
+</script>
+{% endif %}

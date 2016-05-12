@@ -13,7 +13,8 @@ var userSchema = mongoose.Schema({
         numero       : String,
         role         : String,
         avatar       : String,
-        sexe         : String
+        sexe         : String,
+        online       : Boolean
     },
     facebook         : {
         id           : String,

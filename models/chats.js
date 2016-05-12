@@ -5,18 +5,29 @@ var User = require("./user");
 
 
 var chats = new mongoose.Schema({
-    users : [User],
+    users : [{type: Schema.Types.ObjectId, ref: 'User'}],
     themes : String,
     history : String
 });
 
-chats.methods.createPrivateChatRoom = function(callback)
+chats.methods.createPrivateChatRoom = function(user1, user2, callback)
 {
-	var chats = this.model("Chats");
-	var user_id = this._user_1;
-	var user2_id = this._user_2;
-	
-	console.log(user_id, user2_id);
+    var _chats = this.model("Chats");
+     _chats.findOne()
+     .or([{users : [user1, user2]}, {users : [user2, user1]}])
+     .exec( function(err, chat){
+         if(err) 
+            callback(err, null);
+          if(chat === null || chat.length === 0)
+             {
+                 var _chat = new _chats({users : [user1, user2]});
+                 _chat.save(function(err, chat){
+                     callback(err, chat);
+                 })
+             }
+             else
+               callback(null, chat)
+     });
 	
 }
 

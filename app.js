@@ -1,5 +1,8 @@
 var app = {};
 var dirModules = __dirname + "/modules/"
+
+// http://codepen.io/eniotna/pen/xGjWVP
+
 // SERVER
 app.server = require(dirModules + 'server')(app);
 app.server.create();

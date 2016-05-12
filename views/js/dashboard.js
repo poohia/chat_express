@@ -2,6 +2,7 @@ $(document).ready(function(){
   DASHBOARD.init();
   CONTACT.init();
   CHAT.init();
+  ROOM.init();
 });
 
 var DASHBOARD = function()
@@ -31,7 +32,8 @@ var DASHBOARD = function()
       btn_mini_portlet  : "i.btn-mini-portlet",
       portlet_chat_private : $("#prototype-chat-private").data("prototype"),
       column_chats : ".column-chats",
-      btn_create_private_chat : "i.private-chat"
+      btn_create_private_chat : "i.private-chat",
+      portlets_chats : ".portlet-chat"
     };
 
  
@@ -265,10 +267,10 @@ var DASHBOARD = function()
          else
          {
              $portlet.animate({'height' : 0}, function(){
-                 $portlet_content.css('visibility', 'hidden')
                  $portlet.addClass("mini-portlet");
                 $that.addClass("fa-expand").removeClass("fa-minus");
              });
+             $portlet_content.css('visibility', 'hidden')
 
          }
          
@@ -277,14 +279,29 @@ var DASHBOARD = function()
 
     function createPrivateChat()
     {
-        var isShow = false;
-        var id = $(this).closest(".li-contact").data("id");
+        var $li = $(this).closest(".li-contact") ;
+        var id = $li.data("id");
+        var speudo = $(".title", $li).text();
         
         CHAT.createPrivateRoom(id, function(data){
-            console.log(data);
+           var isExist = false ; 
+           $(_global.portlets_chats).each(function(){
+               if($(this).data("id") === data._id)
+               {
+                   isExist = true ;
+                   return ;
+               }
+           });
+           if(!isExist)
+           {
+             var $newPortlet = $(_global.portlet_chat_private.replace("__id__", data._id).replace("__speudo1__",_user.name).replace("__speudo2__",speudo)) ;
+             $(_global.column_chats).append($newPortlet);
+             $(_global.btn_mini_portlet , $newPortlet).on('click',miniPortlet);
+             ROOM.createEvents(data._id);
+           }
         });
         
-        $(_global.column_chats).append(_global.portlet_chat_private.replace("__speudo1__","jordan").replace("__speudo2__","toto"));
+        
     }
     
     function init()
