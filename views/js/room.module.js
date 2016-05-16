@@ -7,7 +7,8 @@ var ROOM  = function(){
        message_content : ".row .message-content",
        send_message : ".btn-send",
        btn_close  : ".close-widget",
-       btn_smiley : ".lien-smileys"
+       btn_smiley : ".lien-smileys",
+       badge : ".portlet-notification "
    }
    
    var rooms = new Array();
@@ -22,7 +23,7 @@ var ROOM  = function(){
    /**** div chat content *********/
    
    var divMessageInfo  = "<div class='message-chat message-info-content message-right'> __content__ </div>" ;
-   var spanInfo = "<span class='infos-message grey-text lighten-3'>__user__ - __date__</span>"
+   var spanInfo = "<span class='infos-message grey-text lighten-3'><img src='__avatar__' class='responsive-img circle avatar' > __user__ - __date__</span>"
    var divMyMessage = "<div class='message-chat message-content message-right '> <span class='theme-color white-text my-message bubble'> __content__  </span><br />"+ spanInfo +"</div>" ;
    var divUserMessage = "<div class='message-chat message-content message-left '> <span class='theme-color-2 white-text user-message bubble'> __content__  </span><br />"+ spanInfo +"</div>" ;
    
@@ -30,7 +31,7 @@ var ROOM  = function(){
  
    var typingTimer;  
    var isTyping = false;
-   
+
    
    
    
@@ -55,6 +56,7 @@ var ROOM  = function(){
        room.smileys  = $(_selectors.btn_smiley, room.portlet);
        room.btnSend = $(_selectors.send_message, room.portlet);
        room.btnClose = $(_selectors.btn_close, room.portlet);
+       room.badge  = $(_selectors.badge, room.portlet);
        room.users = new Array();
        
        /***************************/
@@ -69,7 +71,7 @@ var ROOM  = function(){
        
        /***** events ********/
        room.textarea.focus();
-       
+       room.portlet.on("click",$.proxy(stopAllNotificationOfChat, null, room));
        room.btnSend.on("click", $.proxy(sendMessage, null,  room));
        room.textarea.enterKey($.proxy(sendMessage, null,  room));
        room.btnClose.on("click", $.proxy(closeChat, null, room));
@@ -187,13 +189,16 @@ var ROOM  = function(){
    }
    function sendMyMessage(room, message)
    {
-       room.chatContent.append(smiley_controller.dynamizeMessage(divMyMessage.replace("__content__",message).replace("__user__", _user.name).replace("__date__",getDateTime)));
+       room.chatContent.append(smiley_controller.dynamizeMessage(divMyMessage.replace("__content__",message).replace("__avatar__", _user.avatar).replace("__user__", _user.name).replace("__date__",getDateTime)));
        room.textarea.val('');
    }
    function newMessageRecept(data)
    {
        var room = rooms[data.roomId];
-       room.chatContent.append(divUserMessage.replace("__content__", data.message).replace("__user__",data.user.name).replace("__date__",getDateTime));
+       NOTIFICATION.playSound();
+       NOTIFICATION.sendNotificationTitleDocument("New message of " + data.user.name);
+       NOTIFICATION.appendBadgeNotificaiton(room.badge);
+       room.chatContent.append(divUserMessage.replace("__content__", data.message).replace("__avatar__", data.user.avatar).replace("__user__",data.user.name).replace("__date__",getDateTime));
    }
    function eventSmileys(room)
    {
@@ -238,9 +243,17 @@ var ROOM  = function(){
         };
         return date.toLocaleTimeString("en-us", options);
    }
+   
+   function stopAllNotificationOfChat(room)
+   {
+       room.textarea.focus();
+       NOTIFICATION.stopNotificationTitleDocument();
+       NOTIFICATION.resetBadgeNotification(room.badge);
+   }
+   
+
    function init()
    {
-       
    }
    return {
        init : init,

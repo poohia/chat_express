@@ -112,7 +112,7 @@ module.exports = function(passport) {
         // we are checking to see if the user trying to login already exists
         /**, 'local.password' : hash.hashUserPassword(password)**/
         User.findOne({ 'local.email' :  email }, function(err, user) {
-
+    console.log(user,"user");
             // if there are any errors, return the error before anything else
             if (err)
                 return done(err);
@@ -127,6 +127,7 @@ module.exports = function(passport) {
                 return done(null, false, req.flash('message', 'You entered an email address/password combination that doesn\'t match.')); // req.flash is the way to set flashdata using connect-flash
 
             // all is well, return successful user
+            console.log(req.user);
             return done(null, user);
         });
 

@@ -7,6 +7,7 @@ var spoolContactsShema  = require('./../models/spool_contact');
 /**************************************************/
 
 
+
 module.exports = function(app){
 
 	function getSpeudo(req, res, next)

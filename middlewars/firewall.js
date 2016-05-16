@@ -30,6 +30,7 @@ var module_firewall = function(){
 		"parfeu":[
 		 // For add rule put to begin into this json
 		 // {"url": {{ RegEx url }}, "role" : [ {"item" : role1}, {"item" : role2} ] }
+	     	{"url":"^/sounds/", "role" : [ {"item": user}, ] },
 	        {"url":"^/room/", "role" : [ {"item": user}, ] },
 		 	{"url":"^/contacts/", "role" : [ {"item": user}, ] },
 		 	{"url":"^/contact/", "role" : [ {"item": user}, ] },
@@ -73,6 +74,11 @@ var module_firewall = function(){
 
 	 function getFirewall(req, res, next)
 	 {
+		/*	if(req.cookies.user !== undefined)
+			{
+				req = req.cookies.user ;
+			}*/
+			
             if(req.user === undefined)
 		 	{
 		 		req.user = module_user_anonyme.getAnonymeUser() ;

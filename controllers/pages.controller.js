@@ -16,6 +16,8 @@ module.exports = function(app){
 
 	function dashboard(req, res, next)
 	{
+		//console.log(res.cookie);
+       
 		res.render('dashboard', {'user' : req.user.local});
 	   //  async.parallel([
 	   //  	// GET CONTACTS

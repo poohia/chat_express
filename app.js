@@ -12,12 +12,8 @@ app.server.create();
 // DATABASE 
 app.db = require(dirModules + 'mongoose')(app);
 app.db.connect("chat_express");
-/*
+
 // SOCKET
-app.chat = require('./socket/chat')(app);
-app.socketRooms = require('./socket/rooms')(app);
-app.socketUsers = require('./socket/users')(app);
-*/
 app.socket = require('./modules/socket')(app);
 app.socket.create();
 

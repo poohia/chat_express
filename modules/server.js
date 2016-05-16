@@ -16,6 +16,7 @@ var session = require('express-session');
 var flash    = require('connect-flash');
 var user_anonyme = require("./../models/anonyme_user")(exp);
 var hash = require("./hash")(exp);
+var cookie = require("./../middlewars/cookie");
 var firewall = require("./../middlewars/firewall");
 var validate = require("./../middlewars/validate");
 var chat_valid = require("./../views/common_modules/validate.module.js");
@@ -93,9 +94,9 @@ module.exports = function(app) {
             exp.set('view engine', 'twig');
 
             // middleware that parse cookie header and populate req.cookies
-            exp.use(cookieParser("chat_express_"));
+            exp.use(cookieParser());
             // middleware session 
-            exp.use(session({ secret: 'chat_express_S3CRE7', cookie: { maxAge: 3600000},  resave: false, saveUninitialized: true}));
+             exp.use(session({ secret: 'chat_express_S3CRE7', cookie: { maxAge: 3600000}, resave: false, saveUninitialized: true}));
 
 
             // compression middleware that enable deflate and gzip
@@ -111,6 +112,8 @@ module.exports = function(app) {
             exp.use(passport.session());
             // flash message
             exp.use(flash()); 
+            // cookie
+         //   exp.use(cookie.start);
             // firewall 
             exp.use(firewall.start);
             // validate middlewar
@@ -124,18 +127,32 @@ module.exports = function(app) {
 
     function route(){
              exp.get("index", '/',pageController.index);
-             exp.post("login", '/login', passport.authenticate('local-login', {
+            exp.post("login", '/login', passport.authenticate('local-login', {
                   successRedirect : '/', // redirect to the secure profile section
                   failureRedirect : '/', // redirect back to the signup page if there is an error
                   failureFlash : true // allow flash messages
              }));
+             /*exp.post("login", '/login', function(req, res, next) {
+              passport.authenticate('local-login', function(err, user, info) {
+                if (err) { return next(err); }
+                if (!user) { return res.redirect('/'); }
+                req.logIn(user, function(err) {
+                  if (err) { return next(err); }
+                  if(req.body.remember !== undefined)
+                  {
+                    res.cookie('user', user,  { maxAge: 2592000000 });  // Expires in one month
+                  }
+                  return res.redirect('/');
+                });
+              })(req, res, next);
+            });*/
 
              /***** DASHBOARD ****************************************************/
              exp.get("dashboard", '/dashboard', pageController.dashboard);
 
              exp.post("logout", "/logout", function(req, res, next){
                 req.logout();
-                req.user = module_user_anonyme.getAnonymeUser() ;
+                res.clearCookie("user");
                 res.redirect('/');
              });
               // process the signup form

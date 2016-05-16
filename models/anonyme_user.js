@@ -5,12 +5,14 @@ module.exports = function(app){
 	'use strict';
 
 	var anonyme = 
-	{ "local" :
+	{ 
+       "local" :
 		{
 			'email' : "anonyme", 
 			'password' : "",
 			'role'    : hash.generateHash('ANONYME')
-		}
+		},
+		
 	}
 	function getAnonymeUser(){
 		return anonyme;

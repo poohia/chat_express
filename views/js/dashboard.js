@@ -1,5 +1,6 @@
 $(document).ready(function(){
   DASHBOARD.init();
+  NOTIFICATION.init();
   CONTACT.init();
   CHAT.init();
   ROOM.init();
