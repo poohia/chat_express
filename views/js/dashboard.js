@@ -4,11 +4,13 @@ $(document).ready(function(){
   CONTACT.init();
   CHAT.init();
   ROOM.init();
+  NOTIFICATION.startNotification(_user.id);
+  
 });
 
 var DASHBOARD = function()
 {
-
+    'use strict';
     var _global = {
       btn_collapse : ".button-collapse",
       columns      : "ul.column",
@@ -34,10 +36,22 @@ var DASHBOARD = function()
       portlet_chat_private : $("#prototype-chat-private").data("prototype"),
       column_chats : ".column-chats",
       btn_create_private_chat : "i.private-chat",
-      portlets_chats : ".portlet-chat"
+      portlets_chats : ".portlet-chat",
+      portlet_request_friend_badge : $("#portlet-request-friend .badge-content"),
+      portlet_request_friend : "#portlet-request-friend",
+      portlet_friend_badge : $("#portlet-friends .badge-content"),
+      portlet_friend : "#portlet-friends",
+      
+      
     };
 
- 
+   var _events = {
+       add_user : 'add_user',
+       refuse_user : 'refuse_user',
+       accept_user : 'accep_user',
+       remove_user : 'remove_user',
+       remove_my_request : 'remove_my_request'
+   }
 
    function searchContact(e)
    {
@@ -64,11 +78,10 @@ var DASHBOARD = function()
                       var ContactExist = ($(CONTACT.findContactById(user._id)).length !== 0);
                       var MyRequestExist =  ($(CONTACT.findMyRequestById(user._id)).length !== 0);
                       var img = user.local.avatar;
-                      var alt = "avatar";
                       var id = user._id;
                       var title = user.local.name;
                       var content = "";
-                      var $li = $((li).replace("__id__",id).replace("__img__",img).replace("__alt__",alt).replace("__title__",title).replace("__content__",content));
+                      var $li = $((li).replace("__id__",id).replace("__img__",img).replace("__alt__",title).replace("__title__",title).replace("__content__",content));
                       if(RequestExist || ContactExist || MyRequestExist)
                       {
                             $(_global.icon_add_user + " > i ", $li ).removeClass("fa-user-plus").addClass("fa-check");
@@ -112,11 +125,13 @@ var DASHBOARD = function()
        {
           curr_icon.removeClass("fa-spinner fa-pulse fa-fw").addClass("fa-check");
           $that.off("click");
+          NOTIFICATION.emitNotification(_events.add_user,'', id_user);
+          getMyRequest();
        });
 
     };
 
-    function getRequestContact()
+    function getRequestContact(isNotification)
     {
       $(" > * ",_global.list_request_contact).remove();
       CONTACT.getRequestContact(function(data){
@@ -128,18 +143,19 @@ var DASHBOARD = function()
         var countData = data.length;
         if(countData !== 0)
         {
+          (isNotification)? showNotificationBadge(_global.portlet_request_friend_badge) : '';
           for(var i = 0 ; i < countData ; i++)
           {
+            var _li = li ; 
             var user = data[i] ;
             var img = user.local.avatar;
-            var alt = "avatar";
             var id = user._id;
             var title = user.local.name;
             var content = "";
-            _li = li.replace("__id__",id).replace("__img__",img).replace("__alt__",alt).replace("__title__",title); 
+            _li = _li.replace("__id__",id).replace("__img__",img).replace("__alt__",title).replace("__title__",title); 
             _global.list_request_contact.append($(_li));
           }
-
+           
            $(_global.icon_refuse_contact).on("click", refuseRequestContact);
            $(_global.icon_valid_contact).on("click", acceptRequestContact);
 
@@ -155,7 +171,10 @@ var DASHBOARD = function()
 
        CONTACT.refuseRequestContact(id, function(data){
         if(data.work)
-           refreshDashboard();
+        {
+           getRequestContact();
+           NOTIFICATION.emitNotification(_events.refuse_user,'', id);
+        }
          else
          {
            Materialize.toast('error ::: 10001', 4000);
@@ -173,7 +192,9 @@ var DASHBOARD = function()
        CONTACT.acceptRequestContact(id, function(data){
         if(data.work)
         {
-           refreshDashboard();
+           getRequestContact();
+           getContacts();
+           NOTIFICATION.emitNotification(_events.accept_user,'', id);
         }
          else
          {
@@ -183,22 +204,22 @@ var DASHBOARD = function()
        });
 
     };
-    function getContacts()
+    function getContacts(isNotification)
     {
       $(" > *", _global.list_contact).remove();
       CONTACT.getContacts(function(contacts){
         if(contacts && contacts[0].length > 0)
         {
+            (typeof isNotification === 'boolean' && isNotification)? showNotificationBadge(_global.portlet_friend_badge) : '';
           var li = _global.list_contact.data("prototype");
           for(var i = 0 ; i < contacts[0].length ; i++)
           {
               var contact = contacts[0][i];
               var img = contact.local.avatar;
-              var alt = "avatar";
               var id = contact._id;
               var title = contact.local.name;
               var content = "";
-              var $li = $((li).replace("__id__",id).replace("__img__",img).replace("__alt__",alt).replace("__title__",title).replace("__content__",content));
+              var $li = $((li).replace("__id__",id).replace("__img__",img).replace("__alt__",title).replace("__title__",title).replace("__content__",content));
               _global.list_contact.append($li);
           }
           $(_global.btn_remove_contact).click( removeContact);
@@ -209,15 +230,14 @@ var DASHBOARD = function()
     function removeContact()
     {
        var id = $(this).closest("li.li-contact").data("id");
-       CONTACT.removeContact(id, refreshDashboard);
+       CONTACT.removeContact(id, getContacts);
     };
     
-    function getMyRequest()
+    function getMyRequest(isNotification)
     {
         $(" > *", _global.list_my_request).remove();
         CONTACT.getMyRequest(function(contacts)
         {
-
              if(contacts && contacts.length > 0)
              {
                  var li = _global.list_my_request.data("prototype");
@@ -225,11 +245,10 @@ var DASHBOARD = function()
                  {
                       var contact = contacts[i];
                       var img = contact.local.avatar;
-                      var alt = "avatar";
                       var id = contact._id;
                       var title = contact.local.name;
                       var content = "";
-                      var $li = $((li).replace("__id__",id).replace("__img__",img).replace("__alt__",alt).replace("__title__",title).replace("__content__",content));
+                      var $li = $((li).replace("__id__",id).replace("__img__",img).replace("__alt__",title).replace("__title__",title).replace("__content__",content));
                       _global.list_my_request.append($li);
                  }
                  $(_global.btn_remove_my_request).on("click", removeMyRequest);
@@ -242,23 +261,18 @@ var DASHBOARD = function()
        var id = $(this).closest("li.li-myrequest").data("id");
        CONTACT.removeMyRequest(id, getMyRequest);
     };
-    function refreshDashboard()
-    {
-      getRequestContact();
-      getContacts();
-     // getMyRequest();
-    };
     
     function miniPortlet()
     {
          var $that = $(this);
          var $portlet = $that.closest(".portlet");
          $portlet = $(".portlet-content", $portlet ) ;
-         var $portlet_content = $(" > *", $portlet);
+         var height = ($portlet[0].scrollHeight !== 0)? $portlet[0].scrollHeight : $portlet.data("height"); 
          if($portlet.hasClass("mini-portlet"))
          {
-               $portlet.animate({'height' : $portlet[0].scrollHeight}, function(){
-                   $portlet_content.css('visibility', 'visible');
+             $portlet.css('display', 'block');
+              $portlet.animate({'height' : height}, function(){
+                   
                    $portlet.removeClass("mini-portlet");
                    $that.removeClass("fa-expand").addClass("fa-minus");
                });
@@ -268,10 +282,12 @@ var DASHBOARD = function()
          else
          {
              $portlet.animate({'height' : 0}, function(){
+                  $portlet.css('display', 'none');
                  $portlet.addClass("mini-portlet");
                 $that.addClass("fa-expand").removeClass("fa-minus");
+                $portlet.attr("data-height", height);
              });
-             $portlet_content.css('visibility', 'hidden')
+            
 
          }
          
@@ -305,6 +321,17 @@ var DASHBOARD = function()
         
     }
     
+    function showNotificationBadge(badge, nb)
+    {
+        if(nb === undefined)
+           var nb = parseInt(badge.text()) + 1 ;
+         badge.text(nb).removeClass("invisible");
+    }
+    function clearNotificationBadge()
+    {
+        var badge = $(".badge-content", this);
+        badge.addClass("invisible").text("0");
+    }
     function init()
     {
       $(_global.btn_collapse).sideNav();
@@ -348,6 +375,21 @@ var DASHBOARD = function()
       getMyRequest();
       
      $(_global.btn_mini_portlet).on("click", miniPortlet); 
+     
+     /*** CONNECT NOTIFICATION *******************/
+     
+     NOTIFICATION.connectEvent(_events.add_user, getRequestContact);
+     NOTIFICATION.connectEvent(_events.refuse_user, getMyRequest);
+     NOTIFICATION.connectEvent(_events.accept_user, getContacts);
+     
+     NOTIFICATION.getAllNotification();
+     /*******************************************/
+     
+     /*** clear notificaiton ******************/
+     
+     $(_global.portlet_request_friend).on("click", clearNotificationBadge);
+     $(_global.portlet_friend).on("click", clearNotificationBadge);
+     /****************************************/
      
     };
 

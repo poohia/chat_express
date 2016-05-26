@@ -3,7 +3,7 @@ $(document).ready(function(){
 	INDEX.init();
 })
 var INDEX = function(){
-
+	'use strict';
 	var _global = {
 		btn_signin : "#signin-btn-header",
 		signin_content : ".signin-content",

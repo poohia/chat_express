@@ -7,32 +7,30 @@ var _icons = {
       {'code' : ';)', 'url' : 'https://cdn3.iconfinder.com/data/icons/fugue/icon/smiley-wink.png' }, // Wink
       {'code' : ':p', 'url' : 'https://cdn3.iconfinder.com/data/icons/fugue/icon/smiley-razz.png' }, // Tongue smile
       {'code' : ':o', 'url' : 'https://cdn3.iconfinder.com/data/icons/fugue/icon/smiley-eek.png' }, // Suprised
-      {'code' : [':\'(', ':&#39;('] , 'url' : 'http://www.freesmileys.org/smileys/smiley-basic/cry.gif'}, // Crying
       {'code' : ':$'  , 'url' : 'https://cdn2.iconfinder.com/data/icons/ledicons/smiley_red.png'}, // Shy
       {'code' : ':/'    , 'url' : 'https://cdn2.iconfinder.com/data/icons/ledicons/smiley_fat.png'}, // 
-      {'code' :  ':@'  , 'url' : 'http://www.freesmileys.org/smileys/smiley-basic/rant.gif'} , // Angry
-      {'code' : '(H)' , 'url' : 'https://cdn2.iconfinder.com/data/icons/ledicons/smiley_cool.png' }, // Cool
-      {'code' : '^o)', 'url' : 'http://www.freesmileys.org/smileys/smiley-basic/huh.gif'}, //  Sarcastic
-      {'code' : '(A)', 'url' : 'https://cdn2.iconfinder.com/data/icons/splashyIcons/smiley_amused.png'}, // Angel
-      {'code' : '(Y)' , 'url' : 'https://cdn3.iconfinder.com/data/icons/fugue/icon/thumb-up.png' }, // Thumb up 
-      {'code' : '(N)', 'url' : 'https://cdn3.iconfinder.com/data/icons/fugue/icon/thumb.png' },  // Thumb down
-      {'code' : 'Oo', 'url' : 'https://cdn0.iconfinder.com/data/icons/fugue/icon/smiley-eek-blue.png' },  // Thumb down
-      {'code' : ['><','&#62;&#60;'], 'url' : 'http://www.freesmileys.org/smileys/smiley-basic/badday.gif' }, // &#38;gt;&#38;lt; === ><
-      {'code' : '>:)', 'url' : 'https://cdn2.iconfinder.com/data/icons/ledicons/smiley_yell.png' }, //
       {'code' : ':s', 'url' : 'https://cdn2.iconfinder.com/data/icons/ledicons/smiley_confuse.png'}, // confuse
+      {'code' : '$;)', 'url' : 'https://cdn2.iconfinder.com/data/icons/gnomeicontheme/16x16/stock/emoticons/stock_smiley-23.png'},
+      {'code' : 'O:/', 'url' : 'https://cdn0.iconfinder.com/data/icons/fugue/icon/smiley-roll-blue.png'},
+      {'code' : 'Oo', 'url' : 'https://cdn0.iconfinder.com/data/icons/fugue/icon/smiley-eek-blue.png' },  // Thumb down
+      {'code' : '>:)', 'url' : 'https://cdn2.iconfinder.com/data/icons/ledicons/smiley_yell.png' }, //
       {'code' : ';:D', 'url' : 'https://cdn1.iconfinder.com/data/icons/silk2/emoticon_wink.png'}, // 
       {'code' : ':|', 'url' : 'https://cdn3.iconfinder.com/data/icons/fugue/icon/smiley-neutral.png' }, // 
+      {'code' : '(H)' , 'url' : 'https://cdn2.iconfinder.com/data/icons/ledicons/smiley_cool.png' }, // Cool
+      {'code' : '^o)', 'url' : 'http://www.freesmileys.org/smileys/smiley-basic/huh.gif'}, //  Sarcastic
+      {'code' : '(kiss)', 'url' : 'https://cdn0.iconfinder.com/data/icons/fugue/icon/smiley-kiss.png'}, // kiss
+      {'code' : '(A)', 'url' : 'https://cdn2.iconfinder.com/data/icons/splashyIcons/smiley_amused.png'}, // Angel
       {'code' : '(S)', 'url' : 'https://cdn0.iconfinder.com/data/icons/fugue/icon/smiley-sleep.png' }, // sleep
       {'code' : '(doctor)', 'url' : 'https://cdn3.iconfinder.com/data/icons/pidginsmilies/doctor.png'} , // doctor
       {'code' : '(6)', 'url' : 'https://cdn3.iconfinder.com/data/icons/fugue/icon/smiley-twist.png'}, // Devil
+      {'code' : '(a)', 'url' : 'https://cdn2.iconfinder.com/data/icons/gnomeicontheme/16x16/stock/emoticons/stock_smiley-21.png'}, // aviator
+      {'code' : '(Y)' , 'url' : 'https://cdn3.iconfinder.com/data/icons/fugue/icon/thumb-up.png' }, // Thumb up 
+      {'code' : '(N)', 'url' : 'https://cdn3.iconfinder.com/data/icons/fugue/icon/thumb.png' },  // Thumb down
       {'code' : '(f)', 'url' : 'https://cdn0.iconfinder.com/data/icons/fugue/icon/hand-finger.png'}, // fuck,
       {'code' : '(rock)', 'url' : 'https://cdn0.iconfinder.com/data/icons/fugue/icon/hand-ily.png'}, // rock
-      {'code' : '(a)', 'url' : 'https://cdn2.iconfinder.com/data/icons/gnomeicontheme/16x16/stock/emoticons/stock_smiley-21.png'}, // aviator
-      {'code' : '$;)', 'url' : 'https://cdn2.iconfinder.com/data/icons/gnomeicontheme/16x16/stock/emoticons/stock_smiley-23.png'},
-      {'code' : 'O:/', 'url' : 'https://cdn0.iconfinder.com/data/icons/fugue/icon/smiley-roll-blue.png'},
-      {'code' : '(kiss)', 'url' : 'https://cdn0.iconfinder.com/data/icons/fugue/icon/smiley-kiss.png'}, // kiss
-      
-      
+      {'code' : [':\'(', ':&#39;('] , 'url' : 'http://www.freesmileys.org/smileys/smiley-basic/cry.gif'}, // Crying
+      {'code' :  ':@'  , 'url' : 'http://www.freesmileys.org/smileys/smiley-basic/rant.gif'} , // Angry
+      {'code' : ['><','&#62;&#60;'], 'url' : 'http://www.freesmileys.org/smileys/smiley-basic/badday.gif' }, // &#38;gt;&#38;lt; === ><
     ]
 }
 

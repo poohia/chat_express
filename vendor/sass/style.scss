@@ -1,5 +1,5 @@
 //$width-smileys = 300px !default;
-@import "components/color";
+//@import "components/color";
 
 body{
 	    display: flex;
@@ -110,7 +110,6 @@ main{
 }
 .badge-content
 {
-	@extend .theme-color;
 	display: inline-block;
     min-width: 10px;
     padding: 3px 7px;
@@ -126,7 +125,7 @@ main{
 }
 .badge-content-2
 {
-	@extend .theme-color-2;
+
 }
 #index{
 	position: relative;
@@ -378,11 +377,10 @@ main{
 		    position: absolute;
 		    left: - (300px/2);
 		    z-index: 100;
-		    -webkit-box-shadow: inset 0px 0px 6px 0px rgba(0,0,0,0.52);
-			-moz-box-shadow: inset 0px 0px 6px 0px rgba(0,0,0,0.52);
-			box-shadow: inset 0px 0px 6px 0px rgba(0,0,0,0.52);
 			padding: 10px;
 			overflow-y: auto;
+			border: 1px solid #f5f5f5;
+			opacity: 0.9;
 			.smileys
 			{
 				display: inline;

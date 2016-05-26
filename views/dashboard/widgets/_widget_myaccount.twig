@@ -9,19 +9,19 @@
 	<div class="portlet-content">
 		<ul>
 			<li class="text-center">
-			 <img src="{{ user.avatar }}" class="responsive-img circle"></img>
+			 <img src="{{ user.avatar }}" class="responsive-img circle" alt="avatar"></img>
 			</li>
 			<li>
-				<label>Email : </label><span>{{user.email}}</span>
+				<label>Email : </label><span title="email">{{user.email}}</span>
 			</li>
 			<li>
-				<label>Speudo : </label><span>{{user.name}}</span>
+				<label >Pseudo : </label><span title="pseudo">{{user.name}}</span>
 			</li>
 			<li>
-				<label>Sexe : </label><span>{{user.sexe}}</span>
+				<label>Sexe : </label><span title="sexe">{{user.sexe}}</span>
 			</li>
 			<li>
-				<label>Numero : </label><span>{{user.numero}}</span>
+				<label>Numero : </label><span title="number mobile">{{user.numero}}</span>
 			</li>
 		</ul>
 	</div>

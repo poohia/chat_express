@@ -9,6 +9,7 @@ var spoolContactsShema  = require('./../models/spool_contact');
 
 
 module.exports = function(app){
+	'use strict';
 
 	function getSpeudo(req, res, next)
 	{

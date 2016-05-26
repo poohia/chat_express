@@ -1,6 +1,8 @@
 //var chat_valid = require("../common_modules/validate.module.js");
 
 var validForm = function(){
+	'use strict';
+	
 	var _forms = {
 		'login' : '#form_login',
 		'signup' : '#form_signup',

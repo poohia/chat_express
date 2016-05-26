@@ -1,5 +1,5 @@
 var CONTACT = function(){
-
+	'use strict';
 	var _contacts ;
 	var _requestContact ;
 	var _myRequest ; 

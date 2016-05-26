@@ -7,7 +7,8 @@ var Chats            = require('./../models/chats');
 
 
 module.exports = function(app){
-
+	'use strict';
+	
 	function room(req, res , next)
 	{
 		res.render('room');

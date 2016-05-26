@@ -30,6 +30,7 @@ var module_firewall = function(){
 		"parfeu":[
 		 // For add rule put to begin into this json
 		 // {"url": {{ RegEx url }}, "role" : [ {"item" : role1}, {"item" : role2} ] }
+			{"url":"^/notifications", "role" : [ {"item": user}, ] },
 	     	{"url":"^/sounds/", "role" : [ {"item": user}, ] },
 	        {"url":"^/room/", "role" : [ {"item": user}, ] },
 		 	{"url":"^/contacts/", "role" : [ {"item": user}, ] },

@@ -3,6 +3,7 @@ var crypto = require("crypto");
 var bcrypt   = require('bcrypt-nodejs');
 
 module.exports = function(app){
+	'use strict';
 
 	function generateHash (message){
 			return crypto.createHash('md5').update(message).digest("hex");

@@ -1,5 +1,5 @@
 var ROOM  = function(){
-   
+    'use strict';
    var _selectors = {
        portlet : ".portlet-chat",
        chat_content : ".chat-content",

@@ -1,5 +1,5 @@
 var CHAT = function(){
-    
+    'use strict';
     
     function createPrivateRoom(id, callback)
     {

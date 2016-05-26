@@ -1,9 +1,11 @@
 var    ent = require('ent'), // Permet de bloquer les caractères HTML (sécurité équivalente à htmlentities en PHP)
     fs = require('fs');
 var smiley  = require("./../views/common_modules/smiley.module");
+var Notifications   = require('./../models/notifications');
     
 module.exports = function(app){
-
+    'use strict';
+    
     function jointRoom(socket, data)
     {
       socket.roomId = data.roomId ;
@@ -23,6 +25,7 @@ module.exports = function(app){
     }
     function disconnect(socket, data)
     {
+        console.log("disconnect");
         data.roomId = socket.roomId ;
         socket.broadcast.to(socket.roomId).emit('update disconnect', data) ;
     }
@@ -35,12 +38,34 @@ module.exports = function(app){
 	    data.roomId = socket.roomId ;
 	    socket.broadcast.to(socket.roomId).emit('update message chat', data) ;
 	}
-	
+	function jointRoomNotification(socket, data)
+	{
+
+	    app.socket.listUsers.push(data.id);
+	    socket.notification.id = data.id;
+	    socket.join(data.id);
+	}
+	function notifications(socket,data)
+	{
+	    var indexOfTarget = app.socket.getElementToListOfUsers(data.id_target);
+	    if(indexOfTarget === null)
+	    {
+	         Notifications.create({user: data.id_target, title : data.title_event}, function(err, notification){
+	         });
+	    }
+	    else
+	    {
+	        socket.broadcast.to(data.id_target).emit("new_notification", data.title_event);
+	    }
+	    
+	}
 	return {
         jointRoom : jointRoom,
         startTyping : startTyping,
         stopTyping : stopTyping,
         disconnect : disconnect,
-        messageChat : messageChat
+        messageChat : messageChat,
+        jointRoomNotification: jointRoomNotification,
+        notifications: notifications
 	}
 }

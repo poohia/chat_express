@@ -1,5 +1,6 @@
 var NOTIFICATION = function()
 {
+    'use strict';
       /******* sounds *************/
    
    var basique_notification_sound = "/sounds/basique_notification.mp3";
@@ -10,6 +11,17 @@ var NOTIFICATION = function()
    var speed = 100 ;
    var timeOut = null ;
    /***************************/
+   
+   /** url ajax ***************/
+   
+   var urlNotification = "/notifications";
+   
+   /*********************/
+   
+   var socket = null ; 
+   var events = {};
+   
+
    
    function playSound()
    {
@@ -78,7 +90,52 @@ var NOTIFICATION = function()
          selectors.text(0).addClass("invisible")
        }
    }
+   function startNotification(user_id)
+   {
+       socket = io.connect(window.location.origin);
+       var data = new Object();
+       data.id = user_id;
+       socket.emit("start_notification", data);
+       getNotifications();
+   }
+   function connectEvent(eventAajax, callback)
+   {
+       if(!events[eventAajax])
+            events[eventAajax] = new Array();
+        events[eventAajax].push(callback);
+   }
    
+   function emitNotification(title, value, id_target ,callback)
+   {
+       var data = {};
+       data.id_target = id_target;
+       data.title_event = title;
+       socket.emit("new_notification", data);
+       (callback)? callback : '' ;
+   }
+   function getNotifications()
+   {
+       socket.on("new_notification", function(title){
+           for(var j  = 0 ; j < events[title].length ; j++)
+           {
+               events[title][j](true);
+           }
+       });
+   }
+   function getAllNotification()
+   {
+       $.get("/notifications", function(data){
+           for(var i = 0 ; i < data.length; i++)
+           {
+               var currNot = data[i];
+               var title = currNot.title;
+               for(var j  = 0 ; j < events[title].length ; j++)
+               {
+                   events[title][j](true);
+               }
+           }
+       })
+   }
    function init()
    {
        audio = new Audio();
@@ -92,6 +149,10 @@ var NOTIFICATION = function()
        sendNotificationTitleDocument: sendNotificationTitleDocument,
        stopNotificationTitleDocument: stopNotificationTitleDocument,
        appendBadgeNotificaiton : appendBadgeNotificaiton,
-       resetBadgeNotification : resetBadgeNotification
+       resetBadgeNotification : resetBadgeNotification,
+       emitNotification : emitNotification,
+       connectEvent : connectEvent,
+       startNotification : startNotification,
+       getAllNotification : getAllNotification
    }
 }()

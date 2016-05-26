@@ -8,7 +8,8 @@ var spoolContactsShema  = require('./../models/spool_contact');
 
 
 module.exports = function(app){
-
+	'use strict';
+	
 	function index(req, res , next)
 	{
 		res.render('index',{'flashMessage' : req.flash("message")});
@@ -16,9 +17,7 @@ module.exports = function(app){
 
 	function dashboard(req, res, next)
 	{
-		//console.log(res.cookie);
-       
-		res.render('dashboard', {'user' : req.user.local});
+		res.render('dashboard', {'user' : req.user.local, "_id" : req.user._id});
 	   //  async.parallel([
 	   //  	// GET CONTACTS
 	   //    function(callback){

@@ -1,10 +1,12 @@
-var socketController = require("./../controllers/socket.controller")();
+
 
 module.exports = function (app) {
 	'use strict';
-	
+	var socketController = require("./../controllers/socket.controller")(app);
 	
 	var io  = null ;
+    var listUsers = new Array() ;
+	
 	
 	function create()
 	{
@@ -30,11 +32,41 @@ module.exports = function (app) {
              socket.on("message chat", function(data){
                  socketController.messageChat(socket, data);
              });
+             socket.on("start_notification", function(data){
+                 socket.notification = new Object();
+                 socketController.jointRoomNotification(socket, data);
+             });
+             socket.on("new_notification", function(data){
+                socketController.notifications(socket, data); 
+             });
+             socket.on("disconnect", function(){
+                 try{
+                     listUsers.splice(getElementToListOfUsers(socket.notification.id), 1);
+                 }
+                 catch(e)
+                 {
+                     
+                 }
+             });
         });
         
     }
+    function getElementToListOfUsers(id)
+    {
+       var index = null ;
+       listUsers.forEach(function(element, i){
+             if(element === id) 
+              {
+                 index = i ;
+                  return false;
+              }
+         });
+        return index ;
+    }
 	return{
+	    listUsers : listUsers,
         create : create,
         listen : listen,
+        getElementToListOfUsers : getElementToListOfUsers
 	}
 }
